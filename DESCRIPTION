@@ -1,12 +1,14 @@
 Package: geocoder
 Type: Package
-Title: Manage country wide geocodes.
+Title: Manage country wide geocodes
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: L Hama <l.hama@leeds.ac.uk>
 Description: An R package to manage geocodes in a MongoDB instance.
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
     mongolite
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
