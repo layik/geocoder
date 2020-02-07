@@ -11,6 +11,9 @@ setup(db, collection)
 
 \item{collection}{set collection from parameter.}
 }
+\value{
+mongolite::mongo valid URI
+}
 \description{
 Set an R environment variable with database details. This is done so that
 username and password of the database is kept away from your code base

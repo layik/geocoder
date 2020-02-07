@@ -13,6 +13,8 @@
 #' * (optional) MONGODB_DB
 #' * (optional) MONGODB_COLL - for default connection
 #'
+#' @return mongolite::mongo valid URI
+#'
 #' @param db set database from parameter.
 #' @param collection set collection from parameter.
 #'
@@ -23,10 +25,15 @@
 #' }
 setup = function(db, collection) {
   host = check("MONGODB_HOST")
-  port = check("MONGODB_PORT")
   user = check("MONGODB_USER")
   pass = check("MONGODB_PASS")
-
+  # light checking
+  port = Sys.getenv("MONGODB_PORT")
+  # see mongodb docs for default port of 27017
+  if(port == "") port = "27017"
+  URI = sprintf("mongodb://%s:%s@%s:%s", user, pass, host, port)
+  if(!is.null(db)) URI = file.path(URI, db)
+  URI
 }
 
 #' Function to check environment variable
