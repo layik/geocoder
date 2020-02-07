@@ -9,24 +9,10 @@ v = jsonlite::read_json("~/Desktop/data/vancounver.geojson")
 # those two are the only two fields we need according ot MongoDB docs
 # https://docs.mongodb.com/manual/reference/geojson/
 
-# get the two out
-vg = lapply(v$features, function(x) x$geometry)
-# names(vg[[1]])
-# [1] "type"        "coordinates"
-# vg[[1]]['type']
-# $type
-# [1] "Polygon"
-# coordinates is in [[], []] list
-
-# write it to disk or insert into MongoDB collection
-disk.url = "~/Desktop/data/vancouver.json"
-jsonlite::write_json(vg, disk.url)
-jsonlite::write_json(vg[[1]], "~/Desktop/data/v.json")
-
 # make sure you have your own instance of mongo connected
 # see mongolite docs for details
+# location$drop()
 location = mongolite::mongo("location")
-location$drop()
 lapply(v$features, function(x){
   #' assemble a coordinates list from current read_json
   #' like [[[lon,lat], [lon, lat]]]
