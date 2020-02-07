@@ -13,3 +13,10 @@ more for data analaysis from R.
 # dependencies
 
   - mongolite
+
+# related work
+
+Considered Mapit project, it is great for people who would like to have
+a web interface, for the use of this package, there is the underlying
+work of an R interface to MongoDB in `mongolite` and for this use casee,
+it might be better to use Mongo over PostgreSQL.
