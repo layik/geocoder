@@ -5,6 +5,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# roadmap
+ * import UK MSOA as example and make queries to return boundaries
+ * write functions to carryout above
+ * generalise even further to import other countries or LSOAs etc
+ 
 # geocoder
 
 Use the power of MongoDB to make spatial queries, find boundaries and
