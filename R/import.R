@@ -18,7 +18,7 @@
 #' }
 import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere") {
   force(url)
-  if(!grepl(pattern = index, c("2d", "2dsphere"))) {
+  if(!any(grepl(pattern = index, c("2d", "2dsphere")))) {
     stop("Index must be Mongodb compliant")
   }
   if(local) {
@@ -32,7 +32,13 @@ import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere")
     # connection error?
     stop("Looks like connection is not available to import data.")
   }
-  json = jsonlite::read_json(uri)
+  temp.file = uri # if remote we will flick next
+  if(!local) {
+    temp.file = file.path(tempdir(), "import.json")
+    download.file(uri, temp.file)
+  }
+
+  json = jsonlite::read_json(temp.file)
   # if all is good and there is a "json$features" we can proceed
 
   lapply(json$features, function(x){
@@ -45,7 +51,7 @@ import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere")
     for (i in 1:nrow(m)) {
       l[[1]][[i]] = m[i,] # add it to the first/top dim. of the list
     }
-    vancouver$insert(list(
+    con$insert(list(
       properties = x[['properties']],
       geometry = list(
         type = x[['geometry']][['type']],
@@ -54,7 +60,7 @@ import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere")
     ))
   })
   # now geojson type is set like ["Polygon"] and must be "Polygon"
-  vancouver$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
+  con$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
   # crucial, create geoindex
-  vancouver$index((add = sprintf('{"geometry" : %s}', index)))
+  con$index((add = sprintf('{"geometry" : %s}', index)))
 }
