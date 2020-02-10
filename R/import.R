@@ -11,11 +11,11 @@
 #' @param local assume `uri` being local
 #' @param index a MongoDB compatible index: either 2d or 2dsphere
 #'
-#' @export
 #' #examples
 #' # dontrun{
 #' # import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
 #' # }
+#' @export
 import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere") {
   force(url)
   if(!any(grepl(pattern = index, c("2d", "2dsphere")))) {
@@ -62,5 +62,6 @@ import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere")
   # now geojson type is set like ["Polygon"] and must be "Polygon"
   con$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
   # crucial, create geoindex
-  con$index((add = sprintf('{"geometry" : %s}', index)))
+  con$index((add = paste0('{"geometry" : "', index, '"}')))
+  con$count('{}')
 }

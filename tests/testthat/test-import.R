@@ -10,5 +10,6 @@ test_that("import args", {
 # if GEOCODER_MONGODB_AVAILABLE == true
 test_that("import vancouver works", {
   skip_import();
+  # https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json
 
 })
