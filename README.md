@@ -6,10 +6,11 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # roadmap
- * import UK MSOA as example and make queries to return boundaries
- * write functions to carryout above
- * generalise even further to import other countries or LSOAs etc
- 
+
+  - import UK MSOA as example and make queries to return boundaries
+  - write functions to carryout above
+  - generalise even further to import other countries or LSOAs etc
+
 # geocoder
 
 Use the power of MongoDB to make spatial queries, find boundaries and
@@ -18,6 +19,7 @@ more for data analaysis from R.
 # Dependencies
 
   - mongolite
+  - jsonlite
 
 # Import vancouver geojson data
 
@@ -33,6 +35,9 @@ docker run -d -p 27017:27017 --name mongodb mongo
 ``` r
 library(mongolite)
 test = mongo(url = "mongodb://localhost:27017")
+#> Registered S3 method overwritten by 'openssl':
+#>   method      from
+#>   print.bytes Rcpp
 class(test)
 #> [1] "mongo"       "jeroen"      "environment"
 ```
@@ -41,9 +46,11 @@ Lets add real data
 
 ``` r
 # geojson file from Uberr
-v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
-v.path = "/tmp/vancouver.json"
-download.file(v.url, v.path)
+v.path = file.path(tempdir(), "vancouver.json")
+if(!exists(v.path)) {
+  v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
+  download.file(v.url, v.path)
+}
 v = jsonlite::read_json(v.path)
 length(v$features)
 #> [1] 4627
@@ -138,6 +145,10 @@ r = vancouver$aggregate(pipeline = qry)
 nrow(r)
 #> [1] 32
 ```
+
+# public
+
+package no longer private as there is a working function to use.
 
 # Related work
 
