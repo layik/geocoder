@@ -4,12 +4,10 @@
 \alias{setup}
 \title{Setup mongodb}
 \usage{
-setup(db, collection)
+setup(db)
 }
 \arguments{
 \item{db}{set database from parameter.}
-
-\item{collection}{set collection from parameter.}
 }
 \value{
 mongolite::mongo valid URI
@@ -32,7 +30,10 @@ The functions checks and gives feedback on a valid URL to be used with
 }
 }
 \examples{
-\dontrun{
+{
+host = Sys.getenv("MONGODB_HOST")
+Sys.setenv(MONGODB_HOST="localhost")
 setup()
+Sys.setenv(MONGODB_HOST=host)
 }
 }

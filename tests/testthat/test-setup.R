@@ -46,5 +46,7 @@ test_that("Jeroen's demo server", {
   Sys.setenv(MONGODB_PASS="test")
   Sys.setenv(MONGODB_PORT="43942")
   expect_equal(setup("jeroen_test"), j)
+  con = mongolite::mongo("mtcars", url = setup("jeroen_test"))
+  expect_true(is(con, "jeroen"))
   reset(host, user, pass, port)
 })

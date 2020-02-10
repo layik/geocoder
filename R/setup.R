@@ -16,14 +16,15 @@
 #' @return mongolite::mongo valid URI
 #'
 #' @param db set database from parameter.
-#' @param collection set collection from parameter.
 #'
 #' @export
-#' @examples
-#' \dontrun{
+#' @examples {
+#' host = Sys.getenv("MONGODB_HOST")
+#' Sys.setenv(MONGODB_HOST="localhost")
 #' setup()
+#' Sys.setenv(MONGODB_HOST=host)
 #' }
-setup = function(db, collection) {
+setup = function(db) {
   host = check("MONGODB_HOST")
   # light checking
   user = Sys.getenv("MONGODB_USER")

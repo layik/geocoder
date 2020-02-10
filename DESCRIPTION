@@ -9,7 +9,8 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    mongolite
+    mongolite,
+    jsonlite
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 
