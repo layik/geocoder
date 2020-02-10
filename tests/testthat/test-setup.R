@@ -4,10 +4,10 @@ reset = function(host, user, pass, port) {
   Sys.setenv(MONGODB_PASS=pass)
   Sys.setenv(MONGODB_POST=port)
 }
-test_that("setup works", {
+test_that("gc_setup works", {
   host = Sys.getenv("MONGODB_HOST")
   Sys.unsetenv("MONGODB_HOST")
-  expect_error(setup())
+  expect_error(gc_setup())
   expect_error(check("foo"))
   # reset
   Sys.setenv(MONGODB_HOST = host)
@@ -28,7 +28,7 @@ test_that("Setenv works", {
   #set
   Sys.setenv(MONGODB_HOST="localhost")
   host = Sys.getenv("MONGODB_HOST")
-  expect_equal(setup(), "mongodb://localhost:27017")
+  expect_equal(gc_setup(), "mongodb://localhost:27017")
   # reset
   reset(host, user, pass, port)
 })
@@ -45,8 +45,8 @@ test_that("Jeroen's demo server", {
   Sys.setenv(MONGODB_USER="readwrite")
   Sys.setenv(MONGODB_PASS="test")
   Sys.setenv(MONGODB_PORT="43942")
-  expect_equal(setup("jeroen_test"), j)
-  con = mongolite::mongo("mtcars", url = setup("jeroen_test"))
+  expect_equal(gc_setup("jeroen_test"), j)
+  con = mongolite::mongo("mtcars", url = gc_setup("jeroen_test"))
   expect_true(is(con, "jeroen"))
   reset(host, user, pass, port)
 })

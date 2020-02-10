@@ -24,7 +24,7 @@
 #' setup()
 #' Sys.setenv(MONGODB_HOST=host)
 #' }
-setup = function(db) {
+gc_setup = function(db) {
   host = check("MONGODB_HOST")
   # light checking
   user = Sys.getenv("MONGODB_USER")
