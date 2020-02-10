@@ -25,14 +25,22 @@
 #' }
 setup = function(db, collection) {
   host = check("MONGODB_HOST")
-  user = check("MONGODB_USER")
-  pass = check("MONGODB_PASS")
   # light checking
+  user = Sys.getenv("MONGODB_USER")
+  pass = Sys.getenv("MONGODB_PASS")
   port = Sys.getenv("MONGODB_PORT")
   # see mongodb docs for default port of 27017
   if(port == "") port = "27017"
-  URI = sprintf("mongodb://%s:%s@%s:%s", user, pass, host, port)
-  if(!is.null(db)) URI = file.path(URI, db)
+  URI = sprintf("%s:%s", host, port)
+  if(pass != "" || user != "") { # pass expects user too
+    URI = sprintf("%s:%s@%s", user, pass, URI)
+  } else {
+    if(pass == "" && user != "") {
+      URI = sprintf("%s@%s", user, URI)
+    }
+  }
+  URI = sprintf("mongodb://%s", URI)
+  if(!missing(db) && !is.null(db)) URI = file.path(URI, db)
   URI
 }
 
