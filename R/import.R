@@ -12,10 +12,10 @@
 #' @param index a MongoDB compatible index: either 2d or 2dsphere
 #'
 #' @export
-#' @examples
-#' \dontrun{
-#' import("foo.geojson", "bar")
-#' }
+#' #examples
+#' # dontrun{
+#' # import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
+#' # }
 import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere") {
   force(url)
   if(!any(grepl(pattern = index, c("2d", "2dsphere")))) {
@@ -28,14 +28,14 @@ import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere")
   }
   # check connection before proceding
   con = mongolite::mongo(collection = collection, url = setup())
-  if(!is(con, "jeroen")) {
+  if(!inherits(con, "jeroen")) {
     # connection error?
     stop("Looks like connection is not available to import data.")
   }
   temp.file = uri # if remote we will flick next
   if(!local) {
     temp.file = file.path(tempdir(), "import.json")
-    download.file(uri, temp.file)
+    utils::download.file(uri, temp.file)
   }
 
   json = jsonlite::read_json(temp.file)

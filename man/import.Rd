@@ -4,7 +4,7 @@
 \alias{import}
 \title{Import geocode}
 \usage{
-import(uri, collection, local = TRUE)
+import(uri, collection = "geocode", local = TRUE, index = "2dsphere")
 }
 \arguments{
 \item{uri}{file to read or remote, flick \code{local} param}
@@ -12,6 +12,8 @@ import(uri, collection, local = TRUE)
 \item{collection}{set collection from parameter.}
 
 \item{local}{assume \code{uri} being local}
+
+\item{index}{a MongoDB compatible index: either 2d or 2dsphere}
 }
 \value{
 number of rows inserted
@@ -20,9 +22,4 @@ number of rows inserted
 For now, support geojson file as that is what mongolite package tries to support.
 Shape and others later which would also mean, keeping the package deps minimal.
 For details see data-raw example of this package how geojson objects are imported.
-}
-\examples{
-\dontrun{
-import("foo.geojson", "bar")
-}
 }
