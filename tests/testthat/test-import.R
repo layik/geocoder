@@ -8,8 +8,19 @@ test_that("gc_import args", {
                "Index")
 })
 # if GEOCODER_MONGODB_AVAILABLE == true
-test_that("gc_import vancouver works", {
+test_that("gc_import part vancouver works", {
   skip_import();
-  # https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json
-
+  # import
+  gc_import(paste0("https://github.com/layik/geocoder/releases/",
+                   "download/data/v10.geojson"),
+            local = FALSE,
+            collection="test_v10")
+  temp.file = file.path(tempdir(), "import.json")
+  sf.df = geojsonsf::geojson_sf(temp.file)
+  v = mongolite::mongo(collection="test_v10")
+  expect_equal(nrow(sf.df), v$count())
+  # destroy collection
+  v$drop()
+  # cleanup
+  file.remove(temp.file)
 })
