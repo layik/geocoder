@@ -10,7 +10,8 @@ Encoding: UTF-8
 LazyData: true
 Imports: 
     mongolite,
-    jsonlite
+    geojsonsf,
+    jsonify
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 

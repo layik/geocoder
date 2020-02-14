@@ -25,7 +25,7 @@ Use the power of MongoDB to make spatial queries, find boundaries and more for d
 
 # Dependencies
 * mongolite
-* jsonlite
+* geojsonsf
 
 # Import vancouver geojson data
 Given a local docker instance of MongoDb
@@ -39,6 +39,7 @@ docker run -d -p 27017:27017 --name mongodb mongo
 
 ```{r connect}
 library(mongolite)
+library(sf)
 test = mongo(url = "mongodb://localhost:27017")
 class(test)
 ```
@@ -51,18 +52,9 @@ if(!exists(v.path)) {
   v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
   download.file(v.url, v.path)
 }
-v = jsonlite::read_json(v.path)
-length(v$features)
-
-# the structure is as follows
-# names(v)
-# [1] "type"     "name"     "crs"      "features"
-# names(v$features[[1]])
-# [1] "type"       "properties" "geometry"
-# names(v$features[[1]][['geometry']])
-# [1] "type"        "coordinates"
-# those two are the only two fields we need according ot MongoDB docs
-# https://docs.mongodb.com/manual/reference/geojson/
+v = geojsonsf::geojson_sf(v.path)
+nrow(v)
+class(v)
 
 # create a collection in your MongoDB instancee
 vancouver = mongo("vancouver")
@@ -75,32 +67,24 @@ Quietly populate the collection
 ```{r populatee, results='hide'}
 
 # care is needed to create the mongodb expected geojson objects
-lapply(v$features, function(x){
-  #' assemble a coordinates list from current read_json
-  #' like [[[lon,lat], [lon, lat]]]
-  #' so we can mongolite::insert it to the coordinates field of a page
-  #' within the location collection
-  m = matrix(unlist(x[['geometry']][[2]]), ncol = 2, byrow = T)
-  l = list(list()) # geojson coordinates [[]]
-  for (i in 1:nrow(m)) {
-    l[[1]][[i]] = m[i,] # add it to the first/top dim. of the list
-  }
-  vancouver$insert(list(
-    properties = x[['properties']],
-    geometry = list(
-      type = x[['geometry']][['type']],
-      coordinates = l
-    )
-  ))
+by(v, 1:nrow(v), function(x){
+  #' geojsonsf package handles Mongo compliant objects in the shape of
+  #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
+  #' coordinates and type matching.
+  #' unboxed properties
+  jl = jsonify::to_json(st_drop_geometry(x))
+  jl = substring(text = jl, 2, nchar(jl) - 1)
+  json = paste0(
+  '{"properties": ', jl, ',',
+    '"geometry": ', geojsonsf::sfc_geojson(st_geometry(x)),'}'
+  )
+  stopifnot(jsonify::validate_json(json))
+  vancouver$insert(json)
 })
 ```
 
 Now lets query the collection
 ```{r queries}
-vancouver$find('{}', limit = 1)
-# now geojson type is set like ["Polygon"] and must be "Polygon"
-vancouver$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
-# try now
 vancouver$find('{}', limit = 1)
 vancouver$index((add = '{"geometry" : "2dsphere"}'))
 

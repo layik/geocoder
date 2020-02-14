@@ -19,7 +19,7 @@ more for data analaysis from R.
 # Dependencies
 
   - mongolite
-  - jsonlite
+  - geojsonsf
 
 # Import vancouver geojson data
 
@@ -34,6 +34,8 @@ docker run -d -p 27017:27017 --name mongodb mongo
 
 ``` r
 library(mongolite)
+library(sf)
+#> Linking to GEOS 3.6.2, GDAL 2.2.3, PROJ 4.9.3
 test = mongo(url = "mongodb://localhost:27017")
 #> Registered S3 method overwritten by 'openssl':
 #>   method      from
@@ -51,19 +53,11 @@ if(!exists(v.path)) {
   v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
   download.file(v.url, v.path)
 }
-v = jsonlite::read_json(v.path)
-length(v$features)
+v = geojsonsf::geojson_sf(v.path)
+nrow(v)
 #> [1] 4627
-
-# the structure is as follows
-# names(v)
-# [1] "type"     "name"     "crs"      "features"
-# names(v$features[[1]])
-# [1] "type"       "properties" "geometry"
-# names(v$features[[1]][['geometry']])
-# [1] "type"        "coordinates"
-# those two are the only two fields we need according ot MongoDB docs
-# https://docs.mongodb.com/manual/reference/geojson/
+class(v)
+#> [1] "sf"         "data.frame"
 
 # create a collection in your MongoDB instancee
 vancouver = mongo("vancouver")
@@ -76,44 +70,31 @@ Quietly populate the collection
 ``` r
 
 # care is needed to create the mongodb expected geojson objects
-lapply(v$features, function(x){
-  #' assemble a coordinates list from current read_json
-  #' like [[[lon,lat], [lon, lat]]]
-  #' so we can mongolite::insert it to the coordinates field of a page
-  #' within the location collection
-  m = matrix(unlist(x[['geometry']][[2]]), ncol = 2, byrow = T)
-  l = list(list()) # geojson coordinates [[]]
-  for (i in 1:nrow(m)) {
-    l[[1]][[i]] = m[i,] # add it to the first/top dim. of the list
-  }
-  vancouver$insert(list(
-    properties = x[['properties']],
-    geometry = list(
-      type = x[['geometry']][['type']],
-      coordinates = l
-    )
-  ))
+by(v, 1:nrow(v), function(x){
+  #' geojsonsf package handles Mongo compliant objects in the shape of
+  #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
+  #' coordinates and type matching.
+  #' unboxed properties
+  jl = jsonify::to_json(st_drop_geometry(x))
+  jl = substring(text = jl, 2, nchar(jl) - 1)
+  json = paste0(
+  '{"properties": ', jl, ',',
+    '"geometry": ', geojsonsf::sfc_geojson(st_geometry(x)),'}'
+  )
+  stopifnot(jsonify::validate_json(json))
+  vancouver$insert(json)
 })
+#> Registered S3 method overwritten by 'jsonify':
+#>   method     from    
+#>   print.json jsonlite
 ```
 
 Now lets query the collection
 
 ``` r
 vancouver$find('{}', limit = 1)
-#>   properties.valuePerSqm properties.growth geometry.type
-#> 1                   4563            0.3592       Polygon
-#>                                                                                                                                                             geometry.coordinates
-#> 1 -123.02496, -123.02416, -123.02404, -123.02393, -123.02385, -123.02385, -123.02496, -123.02496, 49.24072, 49.24072, 49.24068, 49.24072, 49.24072, 49.24045, 49.24046, 49.24072
-# now geojson type is set like ["Polygon"] and must be "Polygon"
-vancouver$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
-#> List of 3
-#>  $ modifiedCount: int 4627
-#>  $ matchedCount : int 4627
-#>  $ upsertedCount: int 0
-# try now
-vancouver$find('{}', limit = 1)
-#>   properties.valuePerSqm properties.growth geometry.type
-#> 1                   4563            0.3592       Polygon
+#>   properties.growth properties.valuePerSqm geometry.type
+#> 1            0.3592                   4563       Polygon
 #>                                                                                                                                                             geometry.coordinates
 #> 1 -123.02496, -123.02416, -123.02404, -123.02393, -123.02385, -123.02385, -123.02496, -123.02496, 49.24072, 49.24072, 49.24068, 49.24072, 49.24072, 49.24045, 49.24046, 49.24072
 vancouver$index((add = '{"geometry" : "2dsphere"}'))

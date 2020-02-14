@@ -16,7 +16,10 @@
 #' # import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
 #' # }
 #' @export
-gc_import = function(uri, collection = "geocode", local = TRUE, index = "2dsphere") {
+gc_import = function(uri,
+                     collection = "geocode",
+                     local = TRUE,
+                     index = "2dsphere") {
   force(url)
   if(!any(grepl(pattern = index, c("2d", "2dsphere")))) {
     stop("Index must be Mongodb compliant")
@@ -38,31 +41,21 @@ gc_import = function(uri, collection = "geocode", local = TRUE, index = "2dspher
     utils::download.file(uri, temp.file)
   }
 
-  json = jsonlite::read_json(temp.file)
-  # if all is good and there is a "json$features" we can proceed
-  if(is.null(json[['features']])) {
-    stop("Looks like the geojson imported does not have a top 'features' object.")
-  }
-  lapply(json$features, function(x){
+  json = geojsonsf::geojson_sf(temp.file)
+  # care is needed to create the mongodb expected geojson objects
+  by(v, 1:nrow(v), function(x){
     #' assemble a coordinates list from current read_json
     #' like [[[lon,lat], [lon, lat]]]
-    #' so we can mongolite::insert it to the coordinates field of a page
-    #' within the location collection
-    m = matrix(unlist(x[['geometry']][[2]]), ncol = 2, byrow = T)
-    l = list(list()) # geojson coordinates [[]]
-    for (i in 1:nrow(m)) {
-      l[[1]][[i]] = m[i,] # add it to the first/top dim. of the list
-    }
-    con$insert(list(
-      properties = x[['properties']],
-      geometry = list(
-        type = x[['geometry']][['type']],
-        coordinates = l
-      )
-    ))
+    #' unboxed properties
+    jl = jsonify::to_json(st_drop_geometry(x))
+    jl = substring(text = jl, 2, nchar(jl) - 1)
+    json = paste0(
+      '{"properties": ', jl, ',',
+      '"geometry": ', sfc_geojson(st_geometry(x)),'}'
+    )
+    stopifnot(jsonify::validate_json(json))
+    vancouver$insert(json)
   })
-  # now geojson type is set like ["Polygon"] and must be "Polygon"
-  con$update('{}','{"$set":{"geometry.type": "Polygon"}}', multiple = TRUE)
   # crucial, create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))
   con$count('{}')
