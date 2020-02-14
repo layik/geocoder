@@ -114,9 +114,8 @@ nrow(r)
 #> [1] 32
 ```
 
-# public
-
-package no longer private as there is a working function to use.
+# Acknowledgement
+This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.
 
 # Related work
 

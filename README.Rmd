@@ -104,8 +104,8 @@ r = vancouver$aggregate(pipeline = qry)
 nrow(r)
 ```
 
-# public
-package no longer private as there is a working function to use.
+# Acknowledgement
+This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.
 
 # Related work
 Considered Mapit project, it is great for people who would like to have a web interface, for the use of this package, there is the underlying work of an R interface to MongoDB in `mongolite` and for this use casee, it might be better to use Mongo over PostgreSQL. 
