@@ -11,11 +11,11 @@
 #' @param local assume `uri` being local
 #' @param index a MongoDB compatible index: either 2d or 2dsphere
 #'
-#' #examples
-#' # dontrun{
-#' # import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
-#' # }
 #' @export
+#' @example
+#' \dontrun{
+#' gc_import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
+#' }
 gc_import = function(uri,
                      collection = "geocode",
                      local = TRUE,
@@ -41,9 +41,9 @@ gc_import = function(uri,
     utils::download.file(uri, temp.file)
   }
 
-  json = geojsonsf::geojson_sf(temp.file)
+  sf.df = geojsonsf::geojson_sf(temp.file)
   # care is needed to create the mongodb expected geojson objects
-  by(json, 1:nrow(json), function(x){
+  by(sf.df, 1:nrow(sf.df), function(x){
     #' assemble a coordinates list from current read_json
     #' like [[[lon,lat], [lon, lat]]]
     #' unboxed properties

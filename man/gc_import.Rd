@@ -14,9 +14,7 @@ gc_import(uri, collection = "geocode", local = TRUE,
 
 \item{local}{assume \code{uri} being local}
 
-\item{index}{a MongoDB compatible index: either 2d or 2dsphere
-
-#examplesdontrun{import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")}}
+\item{index}{a MongoDB compatible index: either 2d or 2dsphere}
 }
 \value{
 number of rows inserted
