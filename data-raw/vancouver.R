@@ -11,14 +11,9 @@ apply(v, 1, function(x){
   #' assemble a coordinates list from current read_json
   #' like [[[lon,lat], [lon, lat]]]
   #' unboxed properties
-  jl = jsonify::to_json(st_drop_geometry(x))
-  jl = substring(text = jl, 2, nchar(jl) - 1)
-  json = paste0(
-    '{"properties": ', jl, ',',
-    '"geometry": ', sfc_geojson(st_geometry(x)),'}'
-  )
+  json = geojsonsf::sf_geojson(x, atomise = TRUE )
   stopifnot(jsonify::validate_json(json))
-  location$insert(json)
+  vancouver$insert(json)
 })
 location$index((add = '{"geometry" : "2dsphere"}'))
 

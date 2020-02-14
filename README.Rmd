@@ -72,12 +72,7 @@ by(v, 1:nrow(v), function(x){
   #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
   #' coordinates and type matching.
   #' unboxed properties
-  jl = jsonify::to_json(st_drop_geometry(x))
-  jl = substring(text = jl, 2, nchar(jl) - 1)
-  json = paste0(
-  '{"properties": ', jl, ',',
-    '"geometry": ', geojsonsf::sfc_geojson(st_geometry(x)),'}'
-  )
+  json = geojsonsf::sf_geojson(x, atomise = TRUE )
   stopifnot(jsonify::validate_json(json))
   vancouver$insert(json)
 })

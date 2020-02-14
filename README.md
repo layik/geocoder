@@ -35,11 +35,8 @@ docker run -d -p 27017:27017 --name mongodb mongo
 ``` r
 library(mongolite)
 library(sf)
-#> Linking to GEOS 3.6.2, GDAL 2.2.3, PROJ 4.9.3
+#> Linking to GEOS 3.7.2, GDAL 2.4.2, PROJ 5.2.0
 test = mongo(url = "mongodb://localhost:27017")
-#> Registered S3 method overwritten by 'openssl':
-#>   method      from
-#>   print.bytes Rcpp
 class(test)
 #> [1] "mongo"       "jeroen"      "environment"
 ```
@@ -75,26 +72,18 @@ by(v, 1:nrow(v), function(x){
   #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
   #' coordinates and type matching.
   #' unboxed properties
-  jl = jsonify::to_json(st_drop_geometry(x))
-  jl = substring(text = jl, 2, nchar(jl) - 1)
-  json = paste0(
-  '{"properties": ', jl, ',',
-    '"geometry": ', geojsonsf::sfc_geojson(st_geometry(x)),'}'
-  )
+  json = geojsonsf::sf_geojson(x, atomise = TRUE )
   stopifnot(jsonify::validate_json(json))
   vancouver$insert(json)
 })
-#> Registered S3 method overwritten by 'jsonify':
-#>   method     from    
-#>   print.json jsonlite
 ```
 
 Now lets query the collection
 
 ``` r
 vancouver$find('{}', limit = 1)
-#>   properties.growth properties.valuePerSqm geometry.type
-#> 1            0.3592                   4563       Polygon
+#>      type properties.valuePerSqm properties.growth geometry.type
+#> 1 Feature                   4563            0.3592       Polygon
 #>                                                                                                                                                             geometry.coordinates
 #> 1 -123.02496, -123.02416, -123.02404, -123.02393, -123.02385, -123.02385, -123.02496, -123.02496, 49.24072, 49.24072, 49.24068, 49.24072, 49.24072, 49.24045, 49.24046, 49.24072
 vancouver$index((add = '{"geometry" : "2dsphere"}'))
