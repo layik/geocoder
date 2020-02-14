@@ -16,3 +16,5 @@ data-raw/
 makefile
 ^docs$
 ^codecov\.yml$
+^_pkgdown\.yml$
+^pkgdown$
