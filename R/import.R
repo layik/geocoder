@@ -30,7 +30,7 @@ gc_import = function(uri,
     }
   }
   # check connection before proceding
-  con = mongolite::mongo(collection = collection, url = setup())
+  con = mongolite::mongo(collection = collection, url = gc_setup())
   if(!inherits(con, "jeroen")) {
     # connection error?
     stop("Looks like connection is not available to import data.")
@@ -43,18 +43,18 @@ gc_import = function(uri,
 
   json = geojsonsf::geojson_sf(temp.file)
   # care is needed to create the mongodb expected geojson objects
-  by(v, 1:nrow(v), function(x){
+  by(json, 1:nrow(json), function(x){
     #' assemble a coordinates list from current read_json
     #' like [[[lon,lat], [lon, lat]]]
     #' unboxed properties
-    jl = jsonify::to_json(st_drop_geometry(x))
+    jl = jsonify::to_json(sf::st_drop_geometry(x))
     jl = substring(text = jl, 2, nchar(jl) - 1)
     json = paste0(
       '{"properties": ', jl, ',',
-      '"geometry": ', sfc_geojson(st_geometry(x)),'}'
+      '"geometry": ', geojsonsf::sfc_geojson(sf::st_geometry(x)),'}'
     )
     stopifnot(jsonify::validate_json(json))
-    vancouver$insert(json)
+    con$insert(json)
   })
   # crucial, create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))

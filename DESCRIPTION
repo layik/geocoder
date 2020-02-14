@@ -11,7 +11,8 @@ LazyData: true
 Imports: 
     mongolite,
     geojsonsf,
-    jsonify
+    jsonify,
+    sf
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 Suggests: 

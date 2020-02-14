@@ -33,7 +33,7 @@ The functions checks and gives feedback on a valid URL to be used with
 {
 host = Sys.getenv("MONGODB_HOST")
 Sys.setenv(MONGODB_HOST="localhost")
-setup()
+gc_setup()
 Sys.setenv(MONGODB_HOST=host)
 }
 }

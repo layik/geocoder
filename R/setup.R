@@ -21,7 +21,7 @@
 #' @examples {
 #' host = Sys.getenv("MONGODB_HOST")
 #' Sys.setenv(MONGODB_HOST="localhost")
-#' setup()
+#' gc_setup()
 #' Sys.setenv(MONGODB_HOST=host)
 #' }
 gc_setup = function(db) {
