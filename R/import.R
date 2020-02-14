@@ -6,42 +6,53 @@
 #'
 #' @return number of rows inserted
 #'
-#' @param uri file to read or remote, flick `local` param
+#' @param url file to read or remote, flick `local` param.
 #' @param collection set collection from parameter.
-#' @param local assume `uri` being local
-#' @param index a MongoDB compatible index: either 2d or 2dsphere
+#' @param local assume `url` being local file.
+#' @param index a MongoDB compatible index: either 2d or 2dsphere.
+#' @param mongo_url custom mongourl to use with `collection`,
+#' default value is `'mongodb://localhost:27017'` used with `gc_setup`.
+#' @param silent show messages, default is `FALSE`
 #'
 #' @export
 #' @example
 #' \dontrun{
-#' gc_import("https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json", collection="vancouver")
+#' gc_import(paste0("https://github.com/uber-common/deck.gl-data/raw/",
+#' "master/examples/geojson/vancouver-blocks.json"), local = FALSE,
+#' collection="vancouver")
 #' }
-gc_import = function(uri,
+gc_import = function(url,
                      collection = "geocode",
                      local = TRUE,
-                     index = "2dsphere") {
+                     index = "2dsphere",
+                     mongo_url = 'mongodb://localhost:27017',
+                     silent = FALSE) {
   force(url)
   if(!any(grepl(pattern = index, c("2d", "2dsphere")))) {
     stop("Index must be Mongodb compliant")
   }
   if(local) {
-    if(!file.exists(uri)) {
-      stop("URI does not exist.")
+    if(!file.exists(url)) {
+      stop("URL does not exist.")
     }
   }
   # check connection before proceding
-  con = mongolite::mongo(collection = collection, url = gc_setup())
+  con = mongolite::mongo(collection = collection,
+                         url = mongo_url)
   if(!inherits(con, "jeroen")) {
     # connection error?
     stop("Looks like connection is not available to import data.")
   }
-  temp.file = uri # if remote we will flick next
+  temp.file = url # if remote we will flick next
   if(!local) {
     temp.file = file.path(tempdir(), "import.json")
-    utils::download.file(uri, temp.file)
+    if(!exists(temp.file)) { # avoid
+      utils::download.file(url, temp.file)
+    }
   }
 
   sf.df = geojsonsf::geojson_sf(temp.file)
+  message("Writing '", nrow(sf.df), "' documents...")
   # care is needed to create the mongodb expected geojson objects
   by(sf.df, 1:nrow(sf.df), function(x){
     #' assemble a coordinates list from current read_json
@@ -53,5 +64,7 @@ gc_import = function(uri,
   })
   # crucial, create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))
-  con$count('{}')
+  c = con$count()
+  message("Wrote '", c, "' documents in collection: ", collection)
+  c
 }

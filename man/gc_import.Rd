@@ -4,17 +4,23 @@
 \alias{gc_import}
 \title{Import geocode}
 \usage{
-gc_import(uri, collection = "geocode", local = TRUE,
-  index = "2dsphere")
+gc_import(url, collection = "geocode", local = TRUE,
+  index = "2dsphere", mongo_url = "mongodb://localhost:27017",
+  silent = FALSE)
 }
 \arguments{
-\item{uri}{file to read or remote, flick \code{local} param}
+\item{url}{file to read or remote, flick \code{local} param.}
 
 \item{collection}{set collection from parameter.}
 
-\item{local}{assume \code{uri} being local}
+\item{local}{assume \code{url} being local file.}
 
-\item{index}{a MongoDB compatible index: either 2d or 2dsphere}
+\item{index}{a MongoDB compatible index: either 2d or 2dsphere.}
+
+\item{mongo_url}{custom mongourl to use with \code{collection},
+default value is \code{'mongodb://localhost:27017'} used with \code{gc_setup}.}
+
+\item{silent}{show messages, default is \code{FALSE}}
 }
 \value{
 number of rows inserted
