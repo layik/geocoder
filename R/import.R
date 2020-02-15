@@ -39,10 +39,6 @@ gc_import = function(url,
   # check connection before proceding
   con = mongolite::mongo(collection = collection,
                          url = mongo_url)
-  if(!inherits(con, "jeroen")) {
-    # connection error?
-    stop("Looks like connection is not available to import data.")
-  }
   temp.file = url # if remote we will flick next
   if(!local) {
     temp.file = file.path(tempdir(), "import.json")
