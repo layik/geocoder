@@ -3,7 +3,7 @@
 
 <!-- badges: start -->
 
-# [geocoder](https://layik.github.io/geocoder/) &middot; [![Travis build status](https://travis-ci.org/layik/geocoder.svg?branch=master)](https://travis-ci.org/layik/geocoder) [![codecov](https://codecov.io/gh/layik/geocoder/branch/master/graph/badge.svg)](https://codecov.io/gh/layik/geocoder) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+# [geocoder](https://layik.github.io/geocoder/) · [![Travis build status](https://travis-ci.org/layik/geocoder.svg?branch=master)](https://travis-ci.org/layik/geocoder) [![codecov](https://codecov.io/gh/layik/geocoder/branch/master/graph/badge.svg)](https://codecov.io/gh/layik/geocoder) [![Project Status: WIP](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 
 Use the power of MongoDB to make spatial queries, find boundaries and
 more for data analaysis from R.
@@ -39,18 +39,21 @@ class(test)
 #> [1] "mongo"       "jeroen"      "environment"
 ```
 
-Lets add real data
+Lets add real data (a small slice of [Uber’s
+Vancouver](https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json)
+dataset.)
 
 ``` r
 # geojson file from Uberr
 v.path = file.path(tempdir(), "vancouver.json")
 if(!exists(v.path)) {
-  v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
+  v.url = paste0("https://github.com/layik/geocoder/releases/",
+                 "download/data/v10.geojson")
   download.file(v.url, v.path)
 }
 v = geojsonsf::geojson_sf(v.path)
 nrow(v)
-#> [1] 4627
+#> [1] 10
 class(v)
 #> [1] "sf"         "data.frame"
 
@@ -99,23 +102,33 @@ qry <- '[
     "$geoNear" : { 
       "near" : { "type" : "Point", "coordinates" : [ -123.1107886, 49.2718859 ] },
       "distanceField" : "dist.calculated",
-      "maxDistance" : 100,
+      "maxDistance" : 3000,
       "spherical" : true
     }
   }
 ] '
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
-#> [1] 1
+#> [1] 4
 # changing the maxDistance will increase the number returned
-qry = gsub(x = qry, pattern = "100", replacement = "500")
+qry = gsub(x = qry, pattern = "3000", replacement = "6000")
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
-#> [1] 32
+#> [1] 8
 ```
 
+# development
+
+To run all the tests, you will require mongo to run. Once you are sure
+that you have a container running as outliend above, you will need a
+flag in your R environment `GEOCODER_MONGODB_AVAILABLE=true`. You can
+use R package `usethis::edit_r_environ()`.
+
 # Acknowledgement
-This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.
+
+This work is funded under the
+[Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine)
+GeoVisualization Engine project.
 
 # Related work
 

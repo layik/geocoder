@@ -45,12 +45,13 @@ test = mongo(url = "mongodb://localhost:27017")
 class(test)
 ```
 
-Lets add real data
+Lets add real data (a small slice of [Uber's Vancouver](https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json) dataset.)
 ```{r vancouver}
 # geojson file from Uberr
 v.path = file.path(tempdir(), "vancouver.json")
 if(!exists(v.path)) {
-  v.url = "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"
+  v.url = paste0("https://github.com/layik/geocoder/releases/",
+                 "download/data/v10.geojson")
   download.file(v.url, v.path)
 }
 v = geojsonsf::geojson_sf(v.path)
@@ -91,7 +92,7 @@ qry <- '[
     "$geoNear" : { 
       "near" : { "type" : "Point", "coordinates" : [ -123.1107886, 49.2718859 ] },
       "distanceField" : "dist.calculated",
-      "maxDistance" : 100,
+      "maxDistance" : 3000,
       "spherical" : true
     }
   }
@@ -99,10 +100,13 @@ qry <- '[
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
 # changing the maxDistance will increase the number returned
-qry = gsub(x = qry, pattern = "100", replacement = "500")
+qry = gsub(x = qry, pattern = "3000", replacement = "6000")
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
 ```
+
+# development
+To run all the tests, you will require mongo to run. Once you are sure that you have a container running as outliend above, you will need a flag in your R environment `GEOCODER_MONGODB_AVAILABLE=true`. You can use R package `usethis::edit_r_environ()`. 
 
 # Acknowledgement
 This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.

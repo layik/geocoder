@@ -37,7 +37,7 @@ test_that("Jeroen's demo server", {
   # con <- mongo("mtcars", url = j)
   j = "mongodb://readwrite:test@mongo.opencpu.org:43942/jeroen_test"
   host = Sys.getenv("MONGODB_HOST")
-  user = Sys.getenv("MONGODB_HOST")
+  user = Sys.getenv("MONGODB_USER")
   pass = Sys.getenv("MONGODB_PASS")
   port = Sys.getenv("MONGODB_PORT")
   # set
@@ -48,5 +48,8 @@ test_that("Jeroen's demo server", {
   expect_equal(gc_setup("jeroen_test"), j)
   con = mongolite::mongo("mtcars", url = gc_setup("jeroen_test"))
   expect_true(is(con, "jeroen"))
+  j = "mongodb://readwrite:@mongo.opencpu.org:43942/jeroen_test"
+  Sys.unsetenv("MONGODB_PASS")
+  expect_equal(gc_setup("jeroen_test"), j)
   reset(host, user, pass, port)
 })
