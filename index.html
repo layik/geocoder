@@ -97,23 +97,24 @@
 <a class="sourceLine" id="cb2-4" data-line-number="4">test =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/mongolite/man/mongo.html">mongo</a></span>(<span class="dt">url =</span> <span class="st">"mongodb://localhost:27017"</span>)</a>
 <a class="sourceLine" id="cb2-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(test)</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [1] "mongo"       "jeroen"      "environment"</span></a></code></pre></div>
-<p>Lets add real data</p>
+<p>Lets add real data (a small slice of <a href="https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json">Uber’s Vancouver</a> dataset.)</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># geojson file from Uberr</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">v.path =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"vancouver.json"</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/exists.html">exists</a></span>(v.path)) {</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  v.url =<span class="st"> "https://github.com/uber-common/deck.gl-data/raw/master/examples/geojson/vancouver-blocks.json"</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(v.url, v.path)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">}</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">v =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(v.path)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(v)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [1] 4627</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(v)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] "sf"         "data.frame"</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co"># create a collection in your MongoDB instancee</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">vancouver =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/mongolite/man/mongo.html">mongo</a></span>(<span class="st">"vancouver"</span>)</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># clear it if has been run before</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>()</a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  v.url =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://github.com/layik/geocoder/releases/"</span>,</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">                 <span class="st">"download/data/v10.geojson"</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(v.url, v.path)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">}</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">v =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(v.path)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(v)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; [1] 10</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(v)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; [1] "sf"         "data.frame"</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co"># create a collection in your MongoDB instancee</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15">vancouver =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/mongolite/man/mongo.html">mongo</a></span>(<span class="st">"vancouver"</span>)</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co"># clear it if has been run before</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17">vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>()</a></code></pre></div>
 <p>Quietly populate the collection</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># care is needed to create the mongodb expected geojson objects</span></a>
@@ -147,19 +148,24 @@
 <a class="sourceLine" id="cb5-18" data-line-number="18"><span class="st">    "$geoNear" : { </span></a>
 <a class="sourceLine" id="cb5-19" data-line-number="19"><span class="st">      "near" : { "type" : "Point", "coordinates" : [ -123.1107886, 49.2718859 ] },</span></a>
 <a class="sourceLine" id="cb5-20" data-line-number="20"><span class="st">      "distanceField" : "dist.calculated",</span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">      "maxDistance" : 100,</span></a>
+<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="st">      "maxDistance" : 3000,</span></a>
 <a class="sourceLine" id="cb5-22" data-line-number="22"><span class="st">      "spherical" : true</span></a>
 <a class="sourceLine" id="cb5-23" data-line-number="23"><span class="st">    }</span></a>
 <a class="sourceLine" id="cb5-24" data-line-number="24"><span class="st">  }</span></a>
 <a class="sourceLine" id="cb5-25" data-line-number="25"><span class="st">] '</span></a>
 <a class="sourceLine" id="cb5-26" data-line-number="26">r =<span class="st"> </span>vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="dt">pipeline =</span> qry)</a>
 <a class="sourceLine" id="cb5-27" data-line-number="27"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(r)</a>
-<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; [1] 1</span></a>
+<a class="sourceLine" id="cb5-28" data-line-number="28"><span class="co">#&gt; [1] 4</span></a>
 <a class="sourceLine" id="cb5-29" data-line-number="29"><span class="co"># changing the maxDistance will increase the number returned</span></a>
-<a class="sourceLine" id="cb5-30" data-line-number="30">qry =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="dt">x =</span> qry, <span class="dt">pattern =</span> <span class="st">"100"</span>, <span class="dt">replacement =</span> <span class="st">"500"</span>)</a>
+<a class="sourceLine" id="cb5-30" data-line-number="30">qry =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="dt">x =</span> qry, <span class="dt">pattern =</span> <span class="st">"3000"</span>, <span class="dt">replacement =</span> <span class="st">"6000"</span>)</a>
 <a class="sourceLine" id="cb5-31" data-line-number="31">r =<span class="st"> </span>vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/pkg/sf/man/aggregate.sf.html">aggregate</a></span>(<span class="dt">pipeline =</span> qry)</a>
 <a class="sourceLine" id="cb5-32" data-line-number="32"><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(r)</a>
-<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; [1] 32</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-33" data-line-number="33"><span class="co">#&gt; [1] 8</span></a></code></pre></div>
+</div>
+<div id="development" class="section level1">
+<h1 class="hasAnchor">
+<a href="#development" class="anchor"></a>development</h1>
+<p>To run all the tests, you will require mongo to run. Once you are sure that you have a container running as outliend above, you will need a flag in your R environment <code>GEOCODER_MONGODB_AVAILABLE=true</code>. You can use R package <code>usethis::edit_r_environ()</code>.</p>
 </div>
 <div id="acknowledgement" class="section level1">
 <h1 class="hasAnchor">
