@@ -7,7 +7,7 @@
 #' @return number of rows inserted
 #'
 #' @param url file to read or remote, flick `local` param.
-#' @param collection set collection from parameter.
+#' @param collection set collection from parameter default `geocode`.
 #' @param local assume `url` being local file.
 #' @param index a MongoDB compatible index: either 2d or 2dsphere.
 #' @param mongo_url custom mongourl to use with `collection`,
@@ -17,9 +17,8 @@
 #' @export
 #' @example
 #' \dontrun{
-#' gc_import(paste0("https://github.com/uber-common/deck.gl-data/raw/",
-#' "master/examples/geojson/vancouver-blocks.json"), local = FALSE,
-#' collection="vancouver")
+#' gc_import(paste0("https://github.com/layik/geocoder/releases/",
+#' "download/data/v10.geojson"), local = FALSE)
 #' }
 gc_import = function(url,
                      collection = "geocode",

@@ -106,7 +106,21 @@ nrow(r)
 ```
 
 # development
-To run all the tests, you will require mongo to run. Once you are sure that you have a container running as outliend above, you will need a flag in your R environment `GEOCODER_MONGODB_AVAILABLE=true`. You can use R package `usethis::edit_r_environ()`. 
+To run all the tests, you will require mongo to run. Once you are sure that you have an instance (for example a container running as outliend above), you will need a flag in your R environment `GEOCODER_MONGODB_AVAILABLE=true`. You can use R package `usethis::edit_r_environ()`. 
+
+But the steps should be straightforward for an R developer:
+
+* clone the repo
+
+* from RStudio (cmd/ctrl + T)
+
+* OR from R console:
+  + just run `testthat::test_dir("pathToRepo/tests/testthat")`
+
+```{r tests, collapse=TRUE}
+library("geocoder")
+testthat::test_dir("tests/testthat")
+```
 
 # Acknowledgement
 This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.

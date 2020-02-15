@@ -120,9 +120,46 @@ nrow(r)
 # development
 
 To run all the tests, you will require mongo to run. Once you are sure
-that you have a container running as outliend above, you will need a
-flag in your R environment `GEOCODER_MONGODB_AVAILABLE=true`. You can
-use R package `usethis::edit_r_environ()`.
+that you have an instance (for example a container running as outliend
+above), you will need a flag in your R environment
+`GEOCODER_MONGODB_AVAILABLE=true`. You can use R package
+`usethis::edit_r_environ()`.
+
+But the steps should be straightforward for an R developer:
+
+  - clone the repo
+
+  - from RStudio (cmd/ctrl + T)
+
+  - OR from R console:
+    
+      - just run `testthat::test_dir("pathToRepo/tests/testthat")`
+
+<!-- end list -->
+
+``` r
+library("geocoder")
+testthat::test_dir("tests/testthat")
+#> ✔ |  OK F W S | Context
+#> 
+⠏ |   0       | import
+⠼ |   5       | import
+✔ |   6       | import [1.3 s]
+#> 
+⠏ |   0       | setup
+⠼ |   5       | setup
+✔ |   6       | setup [0.7 s]
+#> 
+#> ══ Results ══════════════════════════════════════════════════════
+#> Duration: 2.1 s
+#> 
+#> OK:       12
+#> Failed:   0
+#> Warnings: 0
+#> Skipped:  0
+#> 
+#> Way to go!
+```
 
 # Acknowledgement
 
