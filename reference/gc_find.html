@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Import geocode — gc_import • geocoder</title>
+<title>Find geocode(s) — gc_find • geocoder</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,10 @@
 
 
 
-<meta property="og:title" content="Import geocode — gc_import" />
-<meta property="og:description" content="For now, support geojson file as that is what mongolite package tries to support.
-Shape and others later which would also mean, keeping the package deps minimal.
-For details see data-raw example of this package how geojson objects are imported." />
+<meta property="og:title" content="Find geocode(s) — gc_find" />
+<meta property="og:description" content="The main function to find geocodes, using standard MongoDB queries,
+with focus on particularly on returing &quot;geometry&quot; documents'
+coordinates as useful objects (thinking about sfcs for instance)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -102,54 +102,39 @@ For details see data-raw example of this package how geojson objects are importe
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Import geocode</h1>
+    <h1>Find geocode(s)</h1>
     
-    <div class="hidden name"><code>gc_import.Rd</code></div>
+    <div class="hidden name"><code>gc_find.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>For now, support geojson file as that is what mongolite package tries to support.
-Shape and others later which would also mean, keeping the package deps minimal.
-For details see data-raw example of this package how geojson objects are imported.</p>
+    <p>The main function to find geocodes, using standard MongoDB queries,
+with focus on particularly on returing "geometry" documents'
+coordinates as useful objects (thinking about sfcs for instance).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gc_import</span>(<span class='no'>url</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='kw'>local</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>index</span> <span class='kw'>=</span> <span class='st'>"2dsphere"</span>, <span class='kw'>mongo_url</span> <span class='kw'>=</span> <span class='st'>"mongodb://localhost:27017"</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>gc_find</span>(<span class='no'>x</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='no'>full_url</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>url</th>
-      <td><p>file to read or remote, flick <code>local</code> param.</p></td>
+      <th>x</th>
+      <td><p>keys and values to return geometries with</p></td>
     </tr>
     <tr>
       <th>collection</th>
       <td><p>set collection from parameter default <code>geocode</code>.</p></td>
     </tr>
     <tr>
-      <th>local</th>
-      <td><p>assume <code>url</code> being local file.</p></td>
-    </tr>
-    <tr>
-      <th>index</th>
-      <td><p>a MongoDB compatible index: either 2d or 2dsphere.</p></td>
-    </tr>
-    <tr>
-      <th>mongo_url</th>
-      <td><p>custom mongourl to use with <code>collection</code>,
-default value is <code>'mongodb://localhost:27017'</code> used with <code>gc_setup</code>.</p></td>
-    </tr>
-    <tr>
-      <th>silent</th>
-      <td><p>show messages, default is <code>FALSE</code></p></td>
+      <th>full_url</th>
+      <td><p>ability to use gc_find on any mongodb</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>number of rows inserted</p>
+    <p>coordinate geospatial R objects</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
