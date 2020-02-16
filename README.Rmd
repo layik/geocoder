@@ -20,8 +20,8 @@ knitr::opts_chunk$set(
 )
 ```
 # roadmap
- * import UK MSOA as example and make queries to return boundaries
- * write functions to carryout above
+ * basic import works with geojson remote/local files, needs  more work
+ * find function can query mongodb and return only geometries
  * generalise even further to import other countries or LSOAs etc
 
 # Dependencies

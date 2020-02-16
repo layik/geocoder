@@ -10,8 +10,8 @@ more for data analaysis from R.
 
 # roadmap
 
-  - import UK MSOA as example and make queries to return boundaries
-  - write functions to carryout above
+  - basic import works with geojson remote/local files, needs more work
+  - find function can query mongodb and return only geometries
   - generalise even further to import other countries or LSOAs etc
 
 # Dependencies
@@ -142,23 +142,25 @@ library("geocoder")
 testthat::test_dir("tests/testthat")
 #> ✔ |  OK F W S | Context
 #> 
-⠏ |   0       | import
-⠼ |   5       | import
-✔ |   6       | import [1.3 s]
+⠏ |   0       | gc-find
+⠋ |   1       | gc-find
+✔ |   2       | gc-find [1.3 s]
 #> 
-⠏ |   0       | setup
-⠼ |   5       | setup
-✔ |   6       | setup [0.7 s]
+⠏ |   0       | gc-import
+⠼ |   5       | gc-import
+✔ |   6       | gc-import [1.2 s]
+#> 
+⠏ |   0       | gc-setup
+⠼ |   5       | gc-setup
+✔ |   6       | gc-setup [0.7 s]
 #> 
 #> ══ Results ══════════════════════════════════════════════════════
-#> Duration: 2.1 s
+#> Duration: 3.3 s
 #> 
-#> OK:       12
+#> OK:       14
 #> Failed:   0
 #> Warnings: 0
 #> Skipped:  0
-#> 
-#> Way to go!
 ```
 
 # Acknowledgement
