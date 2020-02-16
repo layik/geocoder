@@ -1,5 +1,7 @@
 source("../skip-import.R")
 
+context("gc-import")
+
 test_that("gc_import args", {
   expect_error(gc_import())
   expect_error(gc_import(collection = "bar"))

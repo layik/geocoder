@@ -1,3 +1,4 @@
+context("gc-setup")
 reset = function(host, user, pass, port) {
   Sys.setenv(MONGODB_HOST=host)
   Sys.setenv(MONGODB_USER=user)

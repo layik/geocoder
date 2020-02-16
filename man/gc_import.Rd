@@ -11,7 +11,7 @@ gc_import(url, collection = "geocode", local = TRUE,
 \arguments{
 \item{url}{file to read or remote, flick \code{local} param.}
 
-\item{collection}{set collection from parameter.}
+\item{collection}{set collection from parameter default \code{geocode}.}
 
 \item{local}{assume \code{url} being local file.}
 
