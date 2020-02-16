@@ -12,12 +12,21 @@ test_that("can find vancouver geometries", {
   temp.file = file.path(tempdir(), "import.json")
   sf.df = geojsonsf::geojson_sf(temp.file)
   v = mongolite::mongo(collection="test_v10")
+  #'
+  #' { "type": "Feature", "properties":
+  #' { "valuePerSqm": 4563.0, "growth": 0.3592 },
+  #' "geometry": { "type": "Polygon",
+  #' "coordinates": [ [ [ -123.0249569, 49.240719 ],
+  #' [ -123.0241582, 49.2407165 ], ...
+  #' [ -123.0249569, 49.240719 ] ] ] } },
+  #'
   kv = data.frame(properties.growth=c(0.3592))
-  r = gc_find(kv)
+  r = gc_find(kv, collection = "test_v10")
   # should be one
   expect_equal(nrow(r), 1)
   # test with full_url
-  r = gc_find(kv, full_url = "mongodb://localhost:27017/test")
+  r = gc_find(kv, collection = "test_v10",
+              full_url = "mongodb://localhost:27017/test")
   expect_equal(nrow(r), 1)
   # destroy collection
   v$drop()
