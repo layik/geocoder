@@ -22,5 +22,6 @@ Suggests:
     curl,
     knitr,
     covr,
-    stats19
+    stats19,
+    rmarkdown
 VignetteBuilder: knitr
