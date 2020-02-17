@@ -121,7 +121,7 @@ with focus on particularly on returing "geometry" documents'
 coordinates as useful objects (thinking about sfcs for instance).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gc_find</span>(<span class='no'>x</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='no'>full_url</span>)</pre>
+    <pre class="usage"><span class='fu'>gc_find</span>(<span class='no'>x</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='no'>full_url</span>, <span class='kw'>as_sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +137,10 @@ coordinates as useful objects (thinking about sfcs for instance).</p>
     <tr>
       <th>full_url</th>
       <td><p>ability to use gc_find on any mongodb</p></td>
+    </tr>
+    <tr>
+      <th>as_sf</th>
+      <td><p>return the results as an sf object.</p></td>
     </tr>
     </table>
 
