@@ -29,3 +29,14 @@ test_that("gc_import part vancouver works", {
   # cleanup
   file.remove(temp.file)
 })
+
+test_that("gc_import_sf works", {
+  # get some crash data
+  acc = stats19::accidents_sample
+  acc = stats19::format_sf(acc, lonlat = T)
+  # class(acc)
+  s = mongolite::mongo(collection="stats19")
+  gc_import_sf(acc, collection = "stats19")
+  expect_equal(nrow(acc), s$count())
+  s$drop()
+})

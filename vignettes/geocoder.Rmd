@@ -1,0 +1,65 @@
+---
+title: "Introducing stats19"
+author: 
+  - "L Hama"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geocoder}
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteEncoding{UTF-8}
+bibliography: references.bib
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  out.width = "100%"
+)
+```
+
+## Introduction
+
+## UK geocodes case
+
+UK Office of National Statistics Open Geography Portal contains various files which are used by data scientists to plot data on maps. Details of different layers etc.
+
+The MSOA file is [here](https://opendata.arcgis.com/datasets/f341dcfd94284d58aba0a84daf2199e9_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D).
+```{r msoa, eval=FALSE}
+msoa.folder = file.path(tempdir(), "msoa_folder")
+msoa.zip = file.path(tempdir(), "msoa.zip")
+if(!exists(msoa.file)) {
+  download.file(
+    paste0("https://opendata.arcgis.com/datasets/",
+           "f341dcfd94284d58aba0a84daf2199e9_0.zip"),
+    msoa.zip)
+  unzip(msoa.zip, exdir = msoa.folder)
+}
+# read the shape file using `sf`
+msoa.sf = sf::read_sf(file.path(msoa.folder, "Middle_Layer_Super_Output_Areas_December_2001_Full_Clipped_Boundaries_in_England_and_Wales.shp"))
+class(msoa.sf)
+names(msoa.sf)
+substring(geojsonsf::sf_geojson(msoa.sf[1,]), 1, 350)
+```
+
+The data is ready in a clean `sf` object and we can convert each row into a ready to be used by `geocder` to import into Mongodb:
+
+```{r eval=FALSE}
+geocoder::gc_import_sf(msoa.sf, collection = "msoa")
+```
+
+We can now query the database with lists of MSOA codes and easily return GeoJSON formatted "features" ready to be reassembled into `sf`.
+
+```{r, eval=FALSE}
+r = gc_find(data.frame(properties.msoa01cd="E02000998"), collection = "msoa")
+class(r)
+# [1] "data.frame"
+substr(r, 1, 200)
+# [1] "Feature"
+# [2] "list(objectid = 998, msoa01cd = \"E02000998\", msoa01nm = \"Bolton 015\", msoa01nmw = \"Bolton 015\", st_areasha = 1252299.1907256, st_lengths = 8919.80676893236)"
+# [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"
+```
+
+
+

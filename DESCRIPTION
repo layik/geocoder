@@ -8,6 +8,8 @@ Description: An R package to manage geocodes in a MongoDB instance.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/layik/geocoder
+BugReports: https://github.com/layik/geocoder
 Imports: 
     mongolite,
     geojsonsf,
@@ -18,4 +20,7 @@ Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat (>= 2.1.0),
     curl,
-    covr
+    knitr,
+    covr,
+    stats19
+VignetteBuilder: knitr

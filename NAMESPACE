@@ -2,4 +2,5 @@
 
 export(gc_find)
 export(gc_import)
+export(gc_import_sf)
 export(gc_setup)

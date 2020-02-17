@@ -9,7 +9,7 @@ gc_import(url, collection = "geocode", local = TRUE,
   silent = FALSE)
 }
 \arguments{
-\item{url}{file to read or remote, flick \code{local} param.}
+\item{url}{geojson file to read or remote, flick \code{local} param.}
 
 \item{collection}{set collection from parameter default \code{geocode}.}
 

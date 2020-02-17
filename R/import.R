@@ -6,7 +6,7 @@
 #'
 #' @return number of rows inserted
 #'
-#' @param url file to read or remote, flick `local` param.
+#' @param url geojson file to read or remote, flick `local` param.
 #' @param collection set collection from parameter default `geocode`.
 #' @param local assume `url` being local file.
 #' @param index a MongoDB compatible index: either 2d or 2dsphere.
@@ -35,7 +35,7 @@ gc_import = function(url,
       stop("URL does not exist.")
     }
   }
-  # check connection before proceding
+  # TODO: check connection before proceding
   con = mongolite::mongo(collection = collection,
                          url = mongo_url)
   temp.file = url # if remote we will flick next
@@ -47,19 +47,67 @@ gc_import = function(url,
   }
 
   sf.df = geojsonsf::geojson_sf(temp.file)
-  message("Writing '", nrow(sf.df), "' documents...")
-  # care is needed to create the mongodb expected geojson objects
-  by(sf.df, 1:nrow(sf.df), function(x){
-    #' assemble a coordinates list from current read_json
-    #' like [[[lon,lat], [lon, lat]]]
-    #' unboxed properties
-    json = geojsonsf::sf_geojson(x, atomise = TRUE )
-    stopifnot(jsonify::validate_json(json))
-    con$insert(json)
-  })
-  # crucial, create geoindex
+  gc_write_to_mongo(sf.df, con)
+  # create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))
   c = con$count()
   message("Wrote '", c, "' documents in collection: ", collection)
   c
 }
+
+
+#' Import `sf` objects into Mongodb
+#'
+#' TODO: function details
+#'
+#' @return number of rows inserted
+#'
+#' @param x geojson file to read or remote, flick `local` param.
+#' @param collection set collection from parameter default `geocode`.
+#' @param index a MongoDB compatible index: either 2d or 2dsphere.
+#' @param mongo_url custom mongourl to use with `collection`,
+#' default value is `'mongodb://localhost:27017'` used with `gc_setup`.
+#' @param silent show messages, default is `FALSE`
+#'
+#' @export
+#' @example
+#' \dontrun{
+#' x = geojsonsf::geojson_sf(
+#' paste0("https://github.com/layik/geocoder/releases/",
+#' "download/data/v10.geojson")
+#' gc_import_sf(x)
+#' }
+gc_import_sf = function(x,
+                        collection = "geocode",
+                        index = "2dsphere",
+                        mongo_url = 'mongodb://localhost:27017',
+                        silent = FALSE) {
+  # TODO: check connection before proceding
+  con = mongolite::mongo(collection = collection,
+                         url = mongo_url)
+  gc_write_to_mongo(x, con)
+  # create geoindex
+  con$index((add = paste0('{"geometry" : "', index, '"}')))
+  c = con$count()
+  message("Wrote '", c, "' documents in collection: ", collection)
+  c
+}
+
+#' Internal write helper function
+#'
+#' @param sf.df dataframe to iterate and write to `con`
+#' @param con a mongodb connetion initialized with `mongolite::mongo`
+#'
+gc_write_to_mongo = function(sf.df, con) {
+  message("Writing '", nrow(sf.df), "' documents...")
+  # care is needed to create the mongodb expected geojson objects
+  by(sf.df, 1:nrow(sf.df), function(x){
+    #' assemble a coordinates list from current read_json
+    #' like `[[[lon,lat], [lon, lat]]]`
+    #' unboxed properties
+    json = geojsonsf::sf_geojson(x, atomise = TRUE )
+    stopifnot(jsonify::validate_json(json))
+    con$insert(json)
+  })
+}
+
