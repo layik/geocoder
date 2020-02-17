@@ -66,22 +66,14 @@ class(v)
 vancouver = mongo("vancouver")
 # clear it if has been run before
 vancouver$drop()
+vancouver$count()
 ```
 
 Quietly populate the collection
 
 ```{r populatee, results='hide'}
-
-# care is needed to create the mongodb expected geojson objects
-by(v, 1:nrow(v), function(x){
-  #' geojsonsf package handles Mongo compliant objects in the shape of
-  #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
-  #' coordinates and type matching.
-  #' unboxed properties
-  json = geojsonsf::sf_geojson(x, atomise = TRUE )
-  stopifnot(jsonify::validate_json(json))
-  vancouver$insert(json)
-})
+library(geocoder)
+gc_import_sf(v, collection = "vancounver")
 ```
 
 Now lets query the collection

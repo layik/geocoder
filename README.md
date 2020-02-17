@@ -66,32 +66,24 @@ class(v)
 vancouver = mongo("vancouver")
 # clear it if has been run before
 vancouver$drop()
+vancouver$count()
+#> [1] 0
 ```
 
 Quietly populate the collection
 
 ``` r
-
-# care is needed to create the mongodb expected geojson objects
-by(v, 1:nrow(v), function(x){
-  #' geojsonsf package handles Mongo compliant objects in the shape of
-  #' {geometry: {type: "Point", coordinates: [0,1]}} and other GeoJSON valid
-  #' coordinates and type matching.
-  #' unboxed properties
-  json = geojsonsf::sf_geojson(x, atomise = TRUE )
-  stopifnot(jsonify::validate_json(json))
-  vancouver$insert(json)
-})
+library(geocoder)
+gc_import_sf(v, collection = "vancounver")
+#> Writing '10' documents...
+#> Wrote '10' documents in collection: vancounver
 ```
 
 Now lets query the collection
 
 ``` r
 vancouver$find('{}', limit = 1)
-#>      type properties.valuePerSqm properties.growth geometry.type
-#> 1 Feature                   4563            0.3592       Polygon
-#>                                                                                                                                                             geometry.coordinates
-#> 1 -123.02496, -123.02416, -123.02404, -123.02393, -123.02385, -123.02385, -123.02496, -123.02496, 49.24072, 49.24072, 49.24068, 49.24072, 49.24072, 49.24045, 49.24046, 49.24072
+#> data frame with 0 columns and 0 rows
 vancouver$index((add = '{"geometry" : "2dsphere"}'))
 #>   v key._id key.geometry              name             ns
 #> 1 2       1         <NA>              _id_ test.vancouver
@@ -114,12 +106,12 @@ qry <- '[
 ] '
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
-#> [1] 4
+#> [1] 0
 # changing the maxDistance will increase the number returned
 qry = gsub(x = qry, pattern = "3000", replacement = "6000")
 r = vancouver$aggregate(pipeline = qry)
 nrow(r)
-#> [1] 8
+#> [1] 0
 ```
 
 # development
@@ -149,7 +141,7 @@ testthat::test_dir("tests/testthat")
 #> 
 ⠏ |   0       | gc-find
 ⠋ |   1       | gc-find
-✔ |   2       | gc-find [1.5 s]
+✔ |   2       | gc-find [1.3 s]
 #> 
 ⠏ |   0       | gc-import
 ⠼ |   5       | gc-import
@@ -160,10 +152,10 @@ testthat::test_dir("tests/testthat")
 #> 
 ⠏ |   0       | gc-setup
 ⠼ |   5       | gc-setup
-✔ |   6       | gc-setup [0.8 s]
+✔ |   6       | gc-setup [0.7 s]
 #> 
 #> ══ Results ═══════════════════════════════════════════════════════════════════════════════════════
-#> Duration: 3.9 s
+#> Duration: 3.7 s
 #> 
 #> OK:       15
 #> Failed:   0
