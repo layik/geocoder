@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to check environment variable
-local function — check • geocoder</title>
+<title>Internal write helper function — gc_write_to_mongo • geocoder</title>
 
 
 <!-- jquery -->
@@ -36,10 +35,8 @@ local function — check • geocoder</title>
 
 
 
-<meta property="og:title" content="Function to check environment variable
-local function — check" />
-<meta property="og:description" content="Function to check environment variable
-local function" />
+<meta property="og:title" content="Internal write helper function — gc_write_to_mongo" />
+<meta property="og:description" content="Internal write helper function" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,39 +108,39 @@ local function" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to check environment variable
-local function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/setup.R'><code>R/setup.R</code></a></small>
-    <div class="hidden name"><code>check.Rd</code></div>
+    <h1>Internal write helper function</h1>
+    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/import.R'><code>R/import.R</code></a></small>
+    <div class="hidden name"><code>gc_write_to_mongo.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to check environment variable
-local function</p>
+    <p>Internal write helper function</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check</span>(<span class='no'>var</span>)</pre>
+    <pre class="usage"><span class='fu'>gc_write_to_mongo</span>(<span class='no'>sf.df</span>, <span class='no'>con</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>var</th>
-      <td><p>env. var to check</p></td>
+      <th>sf.df</th>
+      <td><p>dataframe to iterate and write to <code>con</code></p></td>
+    </tr>
+    <tr>
+      <th>con</th>
+      <td><p>a mongodb connetion initialized with <code><a href='https://rdrr.io/pkg/mongolite/man/mongo.html'>mongolite::mongo</a></code></p>
+<p>assemble a coordinates list from current read_json
+like <code>[[[lon,lat], [lon, lat]]]</code>
+unboxed properties</p></td>
     </tr>
     </table>
 
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>check</span>(<span class='st'>"foobar"</span>)
-}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

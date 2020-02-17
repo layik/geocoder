@@ -6,8 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to check environment variable
-local function — check • geocoder</title>
+<title>Import <code>sf</code> objects into Mongodb — gc_import_sf • geocoder</title>
 
 
 <!-- jquery -->
@@ -36,10 +35,8 @@ local function — check • geocoder</title>
 
 
 
-<meta property="og:title" content="Function to check environment variable
-local function — check" />
-<meta property="og:description" content="Function to check environment variable
-local function" />
+<meta property="og:title" content="Import <code>sf</code> objects into Mongodb — gc_import_sf" />
+<meta property="og:description" content="TODO: function details" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -111,39 +108,54 @@ local function" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to check environment variable
-local function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/setup.R'><code>R/setup.R</code></a></small>
-    <div class="hidden name"><code>check.Rd</code></div>
+    <h1>Import <code>sf</code> objects into Mongodb</h1>
+    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/import.R'><code>R/import.R</code></a></small>
+    <div class="hidden name"><code>gc_import_sf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Function to check environment variable
-local function</p>
+    <p>TODO: function details</p>
     </div>
 
-    <pre class="usage"><span class='fu'>check</span>(<span class='no'>var</span>)</pre>
+    <pre class="usage"><span class='fu'>gc_import_sf</span>(<span class='no'>x</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='st'>"2dsphere"</span>,
+  <span class='kw'>mongo_url</span> <span class='kw'>=</span> <span class='st'>"mongodb://localhost:27017"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>var</th>
-      <td><p>env. var to check</p></td>
+      <th>x</th>
+      <td><p>geojson file to read or remote, flick <code>local</code> param.</p></td>
+    </tr>
+    <tr>
+      <th>collection</th>
+      <td><p>set collection from parameter default <code>geocode</code>.</p></td>
+    </tr>
+    <tr>
+      <th>index</th>
+      <td><p>a MongoDB compatible index: either 2d or 2dsphere.</p></td>
+    </tr>
+    <tr>
+      <th>mongo_url</th>
+      <td><p>custom mongourl to use with <code>collection</code>,
+default value is <code>'mongodb://localhost:27017'</code> used with <code>gc_setup</code>.</p></td>
+    </tr>
+    <tr>
+      <th>silent</th>
+      <td><p>show messages, default is <code>FALSE</code></p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'>check</span>(<span class='st'>"foobar"</span>)
-}</div></pre>
+    <p>number of rows inserted</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>
