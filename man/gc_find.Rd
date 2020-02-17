@@ -4,7 +4,7 @@
 \alias{gc_find}
 \title{Find geocode(s)}
 \usage{
-gc_find(x, collection = "geocode", full_url)
+gc_find(x, collection = "geocode", full_url, as_sf = TRUE)
 }
 \arguments{
 \item{x}{keys and values to return geometries with}
@@ -12,6 +12,8 @@ gc_find(x, collection = "geocode", full_url)
 \item{collection}{set collection from parameter default \code{geocode}.}
 
 \item{full_url}{ability to use gc_find on any mongodb}
+
+\item{as_sf}{return the results as an sf object.}
 }
 \value{
 coordinate geospatial R objects

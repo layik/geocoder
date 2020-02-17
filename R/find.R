@@ -9,6 +9,7 @@
 #' @param x keys and values to return geometries with
 #' @param collection set collection from parameter default `geocode`.
 #' @param full_url ability to use gc_find on any mongodb
+#' @param as_sf return the results as an sf object.
 #'
 #' @export
 #' @example
@@ -17,7 +18,8 @@
 #' }
 gc_find = function(x,
         collection = 'geocode',
-        full_url) {
+        full_url,
+        as_sf = TRUE ) {
   force(x)
   con = mongolite::mongo(collection = collection)
   if(!missing(full_url)) {

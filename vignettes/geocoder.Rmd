@@ -8,7 +8,7 @@ vignette: >
   %\VignetteIndexEntry{geocoder}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
-# bibliography: references.bib
+bibliography: references.bib
 ---
 
 ```{r setup, include = FALSE}
@@ -20,12 +20,29 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
+MongoDB comes with built in geospatial indexing and querying [@ameri2014application] around the OGC (Open Geospatial Consortium) standard GeoJSON [@butler2016geojson]. MongoDB accepts GeoJSON formatted coordinates and database indices can be created which fascilitates fast spatial queries supportd by MongoDB. 
+
+A par on SF and R package `sf`.
+
+As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. In our eAtlas project, we also support the format to visualize and analyse as a native format. GeoJSON of course is JSON which is natively supported by JavaScript and might be the reason for its popularity.
 
 ## UK geocodes case
 
 UK Office of National Statistics Open Geography Portal contains various files which are used by data scientists to plot data on maps. Details of different layers etc.
 
-The MSOA file is [here](https://opendata.arcgis.com/datasets/f341dcfd94284d58aba0a84daf2199e9_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D).
+### Round trip through MongoDB
+To showcasee the capabilities of `geocoder` package, we can do a round trip data processing from a seudo-standard R spatial `sf` class back to itself through MongoDB's geospatial querying. That is:
+
+* take a shapefile from UK's Open Geography Portal
+
+* turn it into an `sf` object
+
+* write it into a MongoDB collection and create a spatial index on it.
+
+* reassemble the output from find queries back to an `sf` object.
+
+One of the UK census boundaries is called Middle Superr Output Area (MSOA), which can be found [here](https://opendata.arcgis.com/datasets/f341dcfd94284d58aba0a84daf2199e9_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D).
+
 ```{r msoa, eval=FALSE}
 msoa.folder = file.path(tempdir(), "msoa_folder")
 msoa.zip = file.path(tempdir(), "msoa.zip")
@@ -59,7 +76,9 @@ substr(r, 1, 200)
 # [1] "Feature"
 # [2] "list(objectid = 998, msoa01cd = \"E02000998\", msoa01nm = \"Bolton 015\", msoa01nmw = \"Bolton 015\", st_areasha = 1252299.1907256, st_lengths = 8919.80676893236)"
 # [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"
+
 ```
 
+## References
 
 
