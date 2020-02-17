@@ -41,7 +41,9 @@ To showcasee the capabilities of `geocoder` package, we can do a round trip data
 
 * reassemble the output from find queries back to an `sf` object.
 
-One of the UK census boundaries is called Middle Superr Output Area (MSOA), which can be found [here](https://opendata.arcgis.com/datasets/f341dcfd94284d58aba0a84daf2199e9_0.zip?outSR=%7B%22latestWkid%22%3A27700%2C%22wkid%22%3A27700%7D).
+One of the UK census boundaries is called Middle Superr Output Area (MSOA), 
+which can be found 
+[here](https://opendata.arcgis.com/datasets/f341dcfd94284d58aba0a84daf2199e9_0.zip).
 
 ```{r msoa, eval=FALSE}
 msoa.folder = file.path(tempdir(), "msoa_folder")
@@ -54,10 +56,10 @@ if(!exists(msoa.file)) {
   unzip(msoa.zip, exdir = msoa.folder)
 }
 # read the shape file using `sf`
-msoa.sf = sf::read_sf(file.path(msoa.folder, "Middle_Layer_Super_Output_Areas_December_2001_Full_Clipped_Boundaries_in_England_and_Wales.shp"))
+msoa.sf = sf::read_sf(
+  list.files(msoa.folder, pattern = "England_and_Wales.shp"))
 class(msoa.sf)
-names(msoa.sf)
-substring(geojsonsf::sf_geojson(msoa.sf[1,]), 1, 350)
+# substring(geojsonsf::sf_geojson(msoa.sf[1,]), 1, 350)
 ```
 
 The data is ready in a clean `sf` object and we can convert each row into a ready to be used by `geocder` to import into Mongodb:
@@ -78,6 +80,33 @@ substr(r, 1, 200)
 # [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"
 
 ```
+
+A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber's Vancouver land area price.
+
+```{r reproducible}
+# geojson file from Uber
+library(sf)
+v.path = file.path(tempdir(), "vancouver.json")
+if(!exists(v.path)) {
+  v.url = paste0("https://github.com/layik/geocoder/releases/",
+                 "download/data/v10.geojson")
+  download.file(v.url, v.path)
+}
+v = geojsonsf::geojson_sf(v.path)
+st_drop_geometry(v[8,])
+vancouver = mongolite::mongo("vancouver")
+plot(v[8, 2])
+```
+
+Let us retrieve the data and plot the land:
+```{r reproducible2}
+vancouver$drop() # if exists
+geocoder::gc_import_sf(v, collection = "vancouver")
+r = vancouver$iterate(query = '{"properties.growth":0.2781}')
+r.sf = geojsonsf::geojson_sf(r$json())
+plot(r.sf[, 2])
+```
+
 
 ## References
 
