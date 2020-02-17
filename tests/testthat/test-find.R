@@ -24,6 +24,9 @@ test_that("can find vancouver geometries", {
   r = gc_find(kv, collection = "test_v10")
   # should be one
   expect_equal(nrow(r), 1)
+  expect_true(is(r, "sf"))
+  r = gc_find(kv, collection = "test_v10", as_sf = FALSE)
+  expect_true(is(r, "jeroen"))
   # test with full_url
   r = gc_find(kv, collection = "test_v10",
               full_url = "mongodb://localhost:27017/test")

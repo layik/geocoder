@@ -4,7 +4,7 @@
 #' with focus on particularly on returing "geometry" documents'
 #' coordinates as useful objects (thinking about sfcs for instance).
 #'
-#' @return coordinate geospatial R objects
+#' @return sf object from MongoDB or `mongolite::iterate`
 #'
 #' @param x keys and values to return geometries with
 #' @param collection set collection from parameter default `geocode`.
@@ -31,5 +31,12 @@ gc_find = function(x,
      substr(json, nchar(json), nchar(json)) == "]") {
     json = substring(json, 2, nchar(json) - 1)
   }
-  con$find(query = json)
+  it = con$iterate(query = json)
+
+  # create sf and return it
+  if(as_sf) {
+    df = geojsonsf::geojson_sf(it$json())
+    return(df)
+  }
+  it
 }
