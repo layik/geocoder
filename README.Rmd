@@ -20,13 +20,17 @@ knitr::opts_chunk$set(
 )
 ```
 # roadmap
+ * list of UK geocodes (most used)
+ * another country?
  * basic import works with geojson remote/local files, needs  more work
  * find function can query mongodb and return only geometries
  * generalise even further to import other countries or LSOAs etc
 
 # Dependencies
-* mongolite
-* geojsonsf
+* `mongolite` (main dependency)
+* `geojsonsf` (perfect package for link between `sf` and Mongo spatial)
+* `jsonify` (helping with validation)
+* `sf`
 
 # Import vancouver geojson data
 Given a local docker instance of MongoDb
@@ -126,5 +130,7 @@ testthat::test_dir("tests/testthat")
 This work is funded under the [Turing](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) GeoVisualization Engine project.
 
 # Related work
-Considered Mapit project, it is great for people who would like to have a web interface, for the use of this package, there is the underlying work of an R interface to MongoDB in `mongolite` and for this use casee, it might be better to use Mongo over PostgreSQL. 
+Considered [Mapit](https://github.com/mysociety/mapit) project, it is great for people who would like to have a web interface, for the use of this package, there is the underlying work of an R interface to MongoDB in `mongolite` and for this use casee, it might be better to use Mongo over PostgreSQL. 
+
+The list of UK geocodes, looks like before the ONS open geography portal, was compiled [here](https://github.com/martinjc/UK-GeoJSON).
 

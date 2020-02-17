@@ -30,6 +30,8 @@ test_that("gc_import part vancouver works", {
   file.remove(temp.file)
 })
 
+context("gc-import-sf")
+
 test_that("gc_import_sf works", {
   # get some crash data
   acc = stats19::accidents_sample

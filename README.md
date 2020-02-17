@@ -10,14 +10,19 @@ more for data analaysis from R.
 
 # roadmap
 
+  - list of UK geocodes (most used)
+  - another country?
   - basic import works with geojson remote/local files, needs more work
   - find function can query mongodb and return only geometries
   - generalise even further to import other countries or LSOAs etc
 
 # Dependencies
 
-  - mongolite
-  - geojsonsf
+  - `mongolite` (main dependency)
+  - `geojsonsf` (perfect package for link between `sf` and Mongo
+    spatial)
+  - `jsonify` (helping with validation)
+  - `sf`
 
 # Import vancouver geojson data
 
@@ -144,20 +149,23 @@ testthat::test_dir("tests/testthat")
 #> 
 ⠏ |   0       | gc-find
 ⠋ |   1       | gc-find
-✔ |   2       | gc-find [1.3 s]
+✔ |   2       | gc-find [1.5 s]
 #> 
 ⠏ |   0       | gc-import
 ⠼ |   5       | gc-import
-✔ |   6       | gc-import [1.2 s]
+✔ |   6       | gc-import [1.5 s]
+#> 
+⠏ |   0       | gc-import-sf
+✔ |   1       | gc-import-sf
 #> 
 ⠏ |   0       | gc-setup
 ⠼ |   5       | gc-setup
-✔ |   6       | gc-setup [0.7 s]
+✔ |   6       | gc-setup [0.8 s]
 #> 
-#> ══ Results ══════════════════════════════════════════════════════
-#> Duration: 3.3 s
+#> ══ Results ═══════════════════════════════════════════════════════════════════════════════════════
+#> Duration: 3.9 s
 #> 
-#> OK:       14
+#> OK:       15
 #> Failed:   0
 #> Warnings: 0
 #> Skipped:  0
@@ -171,7 +179,11 @@ GeoVisualization Engine project.
 
 # Related work
 
-Considered Mapit project, it is great for people who would like to have
-a web interface, for the use of this package, there is the underlying
-work of an R interface to MongoDB in `mongolite` and for this use casee,
-it might be better to use Mongo over PostgreSQL.
+Considered [Mapit](https://github.com/mysociety/mapit) project, it is
+great for people who would like to have a web interface, for the use of
+this package, there is the underlying work of an R interface to MongoDB
+in `mongolite` and for this use casee, it might be better to use Mongo
+over PostgreSQL.
+
+The list of UK geocodes, looks like before the ONS open geography
+portal, was compiled [here](https://github.com/martinjc/UK-GeoJSON).
