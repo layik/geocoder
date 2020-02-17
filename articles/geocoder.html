@@ -128,37 +128,61 @@
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co"># [1] "Feature"</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># [2] "list(objectid = 998, msoa01cd = \"E02000998\", msoa01nm = \"Bolton 015\", msoa01nmw = \"Bolton 015\", st_areasha = 1252299.1907256, st_lengths = 8919.80676893236)"</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"</span></a></code></pre></div>
+</div>
+<div id="find-geocodes-with-spatial-reference" class="section level3">
+<h3 class="hasAnchor">
+<a href="#find-geocodes-with-spatial-reference" class="anchor"></a>Find geocodes with spatial reference</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># head(st_coordinates(st_geometry(msoa.sf[1,])))</span></a>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># code for point -0.09640594 51.52283</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">qry &lt;-<span class="st"> '[</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  {</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">    "$geoNear" : { </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">      "near" : { "type" : "Point", "coordinates" : [ -0.09640594, 51.52283 ] },</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">      "distanceField" : "dist.calculated",</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="st">      "maxDistance" : 1,</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="st">      "spherical" : true</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="st">    }</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="st">  }</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="st">] '</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13">r =<span class="st"> </span>msoa.collection<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span>(<span class="dt">pipeline =</span> qry)</a>
+<a class="sourceLine" id="cb4-14" data-line-number="14">r<span class="op">$</span>properties<span class="op">$</span>msoa01cd</a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># "E02000001" "E02000576"</span></a></code></pre></div>
+<p>The returned values are two different geometries which both correctly include the poin in the query.</p>
+</div>
+</div>
+<div id="reproducible-example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#reproducible-example" class="anchor"></a>Reproducible example</h2>
 <p>A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber’s Vancouver land area price.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># geojson file from Uber</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; Linking to GEOS 3.7.1, GDAL 2.2.2, PROJ 4.9.2</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">v.path =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"vancouver.json"</span>)</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/exists.html">exists</a></span>(v.path)) {</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">  v.url =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://github.com/layik/geocoder/releases/"</span>,</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">                 <span class="st">"download/data/v10.geojson"</span>)</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8">  <span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(v.url, v.path)</a>
-<a class="sourceLine" id="cb4-9" data-line-number="9">}</a>
-<a class="sourceLine" id="cb4-10" data-line-number="10">v =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(v.path)</a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_drop_geometry</a></span>(v[<span class="dv">8</span>,])</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt;   valuePerSqm growth</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; 8        9843 0.2781</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">vancouver =<span class="st"> </span>mongolite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/mongolite/man/mongo.html">mongo</a></span>(<span class="st">"vancouver"</span>)</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(v[<span class="dv">8</span>, <span class="dv">2</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># geojson file from Uber</span></a>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Linking to GEOS 3.7.1, GDAL 2.2.2, PROJ 4.9.2</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">v.path =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"vancouver.json"</span>)</a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/exists.html">exists</a></span>(v.path)) {</a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">  v.url =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://github.com/layik/geocoder/releases/"</span>,</a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">                 <span class="st">"download/data/v10.geojson"</span>)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8">  <span class="kw"><a href="https://rdrr.io/r/utils/download.file.html">download.file</a></span>(v.url, v.path)</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9">}</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10">v =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(v.path)</a>
+<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_drop_geometry</a></span>(v[<span class="dv">8</span>,])</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt;   valuePerSqm growth</span></a>
+<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; 8        9843 0.2781</span></a>
+<a class="sourceLine" id="cb5-14" data-line-number="14">vancouver =<span class="st"> </span>mongolite<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/mongolite/man/mongo.html">mongo</a></span>(<span class="st">"vancouver"</span>)</a>
+<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(v[<span class="dv">8</span>, <span class="dv">2</span>])</a></code></pre></div>
 <p><img src="geocoder_files/figure-html/reproducible-1.png" width="100%"></p>
 <p>Let us retrieve the data and plot the land:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>() <span class="co"># if exists</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">geocoder<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geocoder/man/gc_import_sf.html">gc_import_sf</a></span>(v, <span class="dt">collection =</span> <span class="st">"vancouver"</span>)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Writing '10' documents...</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; Registered S3 method overwritten by 'jsonify':</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;   method     from    </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt;   print.json jsonlite</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Wrote '10' documents in collection: vancouver</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [1] 10</span></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">r =<span class="st"> </span>vancouver<span class="op">$</span><span class="kw">iterate</span>(<span class="dt">query =</span> <span class="st">'{"properties.growth":0.2781}'</span>)</a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">r.sf =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(r<span class="op">$</span><span class="kw">json</span>())</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(r.sf[, <span class="dv">2</span>])</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/base/drop.html">drop</a></span>() <span class="co"># if exists</span></a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">geocoder<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geocoder/man/gc_import_sf.html">gc_import_sf</a></span>(v, <span class="dt">collection =</span> <span class="st">"vancouver"</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Writing '10' documents...</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Registered S3 method overwritten by 'jsonify':</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt;   method     from    </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt;   print.json jsonlite</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; Wrote '10' documents in collection: vancouver</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [1] 10</span></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9">r =<span class="st"> </span>vancouver<span class="op">$</span><span class="kw">iterate</span>(<span class="dt">query =</span> <span class="st">'{"properties.growth":0.2781}'</span>)</a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">r.sf =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(r<span class="op">$</span><span class="kw">json</span>())</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(r.sf[, <span class="dv">2</span>])</a></code></pre></div>
 <p><img src="geocoder_files/figure-html/reproducible2-1.png" width="100%"></p>
-</div>
 </div>
 <div id="references" class="section level2 unnumbered">
 <h2 class="hasAnchor">
@@ -185,6 +209,7 @@
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
       <li><a href="#uk-geocodes-case">UK geocodes case</a></li>
+      <li><a href="#reproducible-example">Reproducible example</a></li>
       <li><a href="#references">References</a></li>
       </ul>
 </div>
