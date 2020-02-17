@@ -80,6 +80,28 @@ substr(r, 1, 200)
 # [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"
 
 ```
+### Find geocodes with spatial reference
+
+```{r findMSOAcode, eval=FALSE}
+# head(st_coordinates(st_geometry(msoa.sf[1,])))
+# code for point -0.09640594 51.52283
+qry <- '[
+  {
+    "$geoNear" : { 
+      "near" : { "type" : "Point", "coordinates" : [ -0.09640594, 51.52283 ] },
+      "distanceField" : "dist.calculated",
+      "maxDistance" : 1,
+      "spherical" : true
+    }
+  }
+] '
+r = msoa.collection$aggregate(pipeline = qry)
+r$properties$msoa01cd
+# "E02000001" "E02000576"
+```
+The returned values are two different geometries which both correctly include the poin in the query.
+
+## Reproducible example
 
 A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber's Vancouver land area price.
 
@@ -106,6 +128,8 @@ r = vancouver$iterate(query = '{"properties.growth":0.2781}')
 r.sf = geojsonsf::geojson_sf(r$json())
 plot(r.sf[, 2])
 ```
+
+
 
 
 ## References
