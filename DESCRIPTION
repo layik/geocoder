@@ -23,5 +23,6 @@ Suggests:
     knitr,
     covr,
     stats19,
-    rmarkdown
+    rmarkdown,
+    httr
 VignetteBuilder: knitr

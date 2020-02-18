@@ -110,4 +110,3 @@ gc_write_to_mongo = function(sf.df, con) {
     con$insert(json)
   })
 }
-

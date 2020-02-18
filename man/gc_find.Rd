@@ -16,7 +16,7 @@ gc_find(x, collection = "geocode", full_url, as_sf = TRUE)
 \item{as_sf}{return the results as an sf object.}
 }
 \value{
-coordinate geospatial R objects
+sf object from MongoDB or \code{mongolite::iterate}
 }
 \description{
 The main function to find geocodes, using standard MongoDB queries,

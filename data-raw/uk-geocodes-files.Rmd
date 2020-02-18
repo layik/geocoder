@@ -1,0 +1,41 @@
+### putting together a list of most used geocodes
+
+All links are taken from [ONS](https://geoportal.statistics.gov.uk) Open Geography Portal.
+
+## Census
+```{r}
+uk.geocodes = 
+  list(msoa = list(
+    url= paste0("https://opendata.arcgis.com/datasets/",
+           "f341dcfd94284d58aba0a84daf2199e9_0.zip"),
+    format="shp"))
+uk.geocodes[['townsandcities']] = 
+  list(url=paste0("https://opendata.arcgis.com/datasets/",
+                  "58b0dfa605d5459b80bf08082999b27c_0.zip"),
+       format="shp")
+
+uk.geocodes[['lad']] = 
+  list(url=paste0("https://opendata.arcgis.com/datasets/",
+                  "1d78d47c87df4212b79fe2323aae8e08_0.zip"),
+       format="shp")
+
+uk.geocodes[['onspd']] = 
+  list(url=paste0("http://geoportal.statistics.gov.uk/",
+                  "datasets/75edec484c5d49bcadd4893c0ebca0ff_0.csv"),
+       format="csv")
+```
+
+## Electoral
+
+```{r}
+uk.geocodes[['westminister']] = 
+  list(url=paste0("https://opendata.arcgis.com/datasets/",
+                  "b64677a2afc3466f80d3d683b71c3468_0.zip"),
+       format="shp",
+       year="2018")
+```
+
+```{r write}
+usethis::use_data(uk.geocodes)
+```
+
