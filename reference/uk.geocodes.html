@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find geocode(s) — gc_find • geocoder</title>
+<title>UK geocode download URLs — uk.geocodes • geocoder</title>
 
 
 <!-- jquery -->
@@ -35,10 +35,12 @@
 
 
 
-<meta property="og:title" content="Find geocode(s) — gc_find" />
-<meta property="og:description" content="The main function to find geocodes, using standard MongoDB queries,
-with focus on particularly on returing &quot;geometry&quot; documents'
-coordinates as useful objects (thinking about sfcs for instance)." />
+<meta property="og:title" content="UK geocode download URLs — uk.geocodes" />
+<meta property="og:description" content="uk.geocodes and geocodes.uk contain various
+details about URLs which can be used to download
+boundaries. Two fields are compulsory: url and
+format. But you may find year and other details
+for the dataset." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -110,50 +112,31 @@ coordinates as useful objects (thinking about sfcs for instance)." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find geocode(s)</h1>
-    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/find.R'><code>R/find.R</code></a></small>
-    <div class="hidden name"><code>gc_find.Rd</code></div>
+    <h1>UK geocode download URLs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/data.R'><code>R/data.R</code></a></small>
+    <div class="hidden name"><code>uk.geocodes.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>The main function to find geocodes, using standard MongoDB queries,
-with focus on particularly on returing "geometry" documents'
-coordinates as useful objects (thinking about sfcs for instance).</p>
+    <p><code>uk.geocodes</code> and <code>geocodes.uk</code> contain various
+details about URLs which can be used to download
+boundaries. Two fields are compulsory: <code>url</code> and
+<code>format</code>. But you may find <code>year</code> and other details
+for the dataset.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gc_find</span>(<span class='no'>x</span>, <span class='kw'>collection</span> <span class='kw'>=</span> <span class='st'>"geocode"</span>, <span class='no'>full_url</span>, <span class='kw'>as_sf</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>keys and values to return geometries with</p></td>
-    </tr>
-    <tr>
-      <th>collection</th>
-      <td><p>set collection from parameter default <code>geocode</code>.</p></td>
-    </tr>
-    <tr>
-      <th>full_url</th>
-      <td><p>ability to use gc_find on any mongodb</p></td>
-    </tr>
-    <tr>
-      <th>as_sf</th>
-      <td><p>return the results as an sf object.</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
-    <p>sf object from MongoDB or <code>mongolite::iterate</code></p>
+    <p>The data can be (re-)generated using the script in the
+<code>data-raw</code> directory.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
+      <li><a href="#note">Note</a></li>
     </ul>
 
   </div>
