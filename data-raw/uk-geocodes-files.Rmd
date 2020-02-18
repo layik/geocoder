@@ -35,7 +35,18 @@ uk.geocodes[['westminister']] =
        year="2018")
 ```
 
+## Health
+```{r}
+uk.geocodes[['ccg']] = 
+  list(url=paste0("https://opendata.arcgis.com/datasets/",
+                  "5252644ec26e4bffadf9d3661eef4826_0.zip"),
+       format="shp",
+       year="2018")
+```
+
+
+### Regenerate the data
 ```{r write}
-usethis::use_data(uk.geocodes)
+usethis::use_data(uk.geocodes, overwrite = TRUE)
 ```
 
