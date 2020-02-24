@@ -105,7 +105,7 @@ The returned values are two different geometries which both correctly include th
 
 A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber's Vancouver land area price.
 
-```{r reproducible}
+```{r reproducible, out.width="50%", fig.align='center'}
 # geojson file from Uber
 library(sf)
 v.path = file.path(tempdir(), "vancouver.json")
@@ -114,19 +114,29 @@ if(!exists(v.path)) {
                  "download/data/v10.geojson")
   download.file(v.url, v.path)
 }
+
 v = geojsonsf::geojson_sf(v.path)
-st_drop_geometry(v[8,])
 vancouver = mongolite::mongo("vancouver")
-plot(v[8, 2])
+# plot(v[8, ], axes = TRUE)
 ```
 
 Let us retrieve the data and plot the land:
-```{r reproducible2}
+```{r reproducible2, out.width="50%", fig.align='center'}
 vancouver$drop() # if exists
 geocoder::gc_import_sf(v, collection = "vancouver")
 r = vancouver$iterate(query = '{"properties.growth":0.2781}')
 r.sf = geojsonsf::geojson_sf(r$json())
-plot(r.sf[, 2])
+# plot(r.sf[, ], axes = TRUE)
+```
+
+Visual check that both entries are the same:
+```{r,echo=FALSE, fig.width=250, fig.height=200,fig.align='center'}
+library(ggplot2)
+ggplot() +
+  geom_sf(data = v[8, ], colour = "red", fill = NA) +
+  theme(axis.text.x = element_text(angle = 75, hjust = 1))
+ggplot() +
+  geom_sf(data = r.sf[, ], colour = "red", fill = NA)
 ```
 
 
