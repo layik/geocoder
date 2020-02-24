@@ -3,7 +3,7 @@ title: "Introducing geocoder"
 author: 
   - "L Hama"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{geocoder}
   %\VignetteEngine{knitr::rmarkdown}
@@ -20,11 +20,14 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
+Finding geocodes [@goldberg2007text] is a cumbersome task for data analysts. In the case of the UK, despite the availability of "open geography portal" [@office2016open], data scientists need to find relevant source of the data, which could be typically an ESRI shape file or sometimes a CSV. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what database management systems (DBMS) should be doing. The idea of having an R package that can fascilitate this and in the age of NoSQL and other big data oriented DBMS, `geocoder` is the missing R package for this purpose.
+
+## Relevant technology
 MongoDB comes with built in geospatial indexing and querying [@ameri2014application] around the OGC (Open Geospatial Consortium) standard GeoJSON [@butler2016geojson]. MongoDB accepts GeoJSON formatted coordinates and database indices can be created which fascilitates fast spatial queries supportd by MongoDB. 
 
-A par on SF and R package `sf`.
+The standardisation of storage and access model of two-dimentional geographies by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This is known as [Simple Features](https://www.iso.org/standard/40114.html). In the case of R, the well known package called `sf` [@pebesma2018simple] defines the standard and provides tools to manage geographic data in R.
 
-As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. In our eAtlas project, we also support the format to visualize and analyse as a native format. GeoJSON of course is JSON which is natively supported by JavaScript and might be the reason for its popularity.
+As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. The Turing Institute's eAtlas project supports GeoJSON format to visualize and analyse as a native format (to JavaScript). GeoJSON is JSON which is natively supported by JavaScript and might be the reason for its wider popularity.
 
 ## UK geocodes case
 
@@ -76,8 +79,7 @@ class(r)
 # [1] "data.frame"
 substr(r, 1, 200)
 # [1] "Feature"
-# [2] "list(objectid = 998, msoa01cd = \"E02000998\", msoa01nm = \"Bolton 015\", msoa01nmw = \"Bolton 015\", st_areasha = 1252299.1907256, st_lengths = 8919.80676893236)"
-# [3] "list(type = \"MultiPolygon\", coordinates = list(c(-2.45801466425535, -2.4579238289056, -2.45783318819446, -2.45772734343794, -2.4576065864082, -2.45757627561088, -2.45753085804672, -2.45748544050185, -"
+# [2] "list(objectid = 998, msoa01cd = \"E02000998\", ..."
 
 ```
 ### Find geocodes with spatial reference
@@ -130,13 +132,15 @@ r.sf = geojsonsf::geojson_sf(r$json())
 ```
 
 Visual check that both entries are the same:
-```{r,echo=FALSE, fig.width=250, fig.height=200,fig.align='center'}
+
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%"}
 library(ggplot2)
 ggplot() +
   geom_sf(data = v[8, ], colour = "red", fill = NA) +
-  theme(axis.text.x = element_text(angle = 75, hjust = 1))
+  theme(axis.text.x = element_text(angle = 65, hjust = 1))
 ggplot() +
-  geom_sf(data = r.sf[, ], colour = "red", fill = NA)
+  geom_sf(data = r.sf, colour = "red", fill = NA) +
+  theme(axis.text.x = element_text(angle = 65, hjust = 1))
 ```
 
 
