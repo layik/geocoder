@@ -154,7 +154,6 @@ v$count('{"properties.growth": 0.2724}') ==
 It is also fair to assume that for a data scientist to make a, In memory databases are built to manage in memory access to data, but that is not the focus of this document. 
 
 ```{r inR, results='hide', warning=FALSE, message=FALSE}
-library(sf)
 url = paste0("https://github.com/uber-common/deck.gl-data/",
              "blob/master/examples/geojson/vancouver-blocks.json?raw=true")
 v.path = file.path(tempdir(), "v.geojson")
@@ -163,55 +162,61 @@ if(!file.exists(v.path)) {
 }
 # read first to get bbx
 sf = st_read(v.path)
-bbx = st_as_sfc(st_bbox(sf))
 st_bbox(sf)
 # xmin       ymin       xmax       ymax 
 # -123.26392   49.19952 -123.02347   49.29561 
 # [ <bottom left coordinates> ], xminymin
 # [ <upper right coordinates> ]  xmaxymax
+cent = st_centroid(st_as_sfc(st_bbox(sf)))
+cent = st_transform(cent, 3488)
+circle = st_buffer(cent, dist = 3000)
+circle = st_transform(circle, 4326)
 
 # load sf into mongo
 v = mongolite::mongo(collection = "test_geocoder")
 v$drop() # just to be sure
 geocoder::gc_import_sf(sf, collection = "test_geocoder")
-# load and searrch
+
+# scoping
+sffind = NULL
+vfind = NULL
+# load and search
 sf_search = function() {
   sf = st_read(v.path)
   # in memory search (R)
-  all = st_nearest_points(sf, bbx)
-  stopifnot(length(all) == nrow(sf))
+  sffind <<- st_intersection(sf, st_as_sf(circle))
 }
 
 # Mongo search
 mongo_search = function() {
-  vfind = v$find('{
+  vfind <<- v$iterate(paste0('{
      "geometry": { 
         "$geoIntersects": {
-            "$geometry": {
-               "type": "Polygon" ,
-               "coordinates": [
-                 [ [ -123.26392, 49.19952  ], [ -123.26392, 49.29561 ], 
-                 [ -123.02347, 49.29561 ], [ -123.02347, 49.19952 ], 
-                 [ -123.26392, 49.19952  ] ]
-               ]
-            }
+            "$geometry": ', 
+             geojsonsf::sf_geojson(st_as_sf(circle), atomise = TRUE )
+          ,'
         }
       }
-     }')
-  stopifnot(nrow(vfind) == nrow(sf))
+     }'))
 }
 mb = microbenchmark::microbenchmark(
   sf_search(),
   mongo_search(),
-  times = 2
+  times = 1
 )
-
 ```
 Now show the results
 ```{r show, echo=FALSE}
 mb
 ```
 
+Visual check:
+
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%"}
+plot(sffind["valuePerSqm"], main="sf::st_intersection")
+vfind = geojsonsf::geojson_sf(vfind$json())
+plot(vfind["valuePerSqm"], main="Mongo geoIntersects")
+```
 
 
 ## References
