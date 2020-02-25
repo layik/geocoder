@@ -24,6 +24,8 @@ Suggests:
     covr,
     stats19,
     rmarkdown,
-    httr
+    httr,
+    microbenchmark,
+    ggplot2
 VignetteBuilder: knitr
 Depends: R (>= 2.10)

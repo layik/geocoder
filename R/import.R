@@ -21,7 +21,7 @@
 #' "download/data/v10.geojson"), local = FALSE)
 #' }
 gc_import = function(url,
-                     collection = "geocode",
+                     collection = "geocoder",
                      local = TRUE,
                      index = "2dsphere",
                      mongo_url = 'mongodb://localhost:27017',
@@ -51,7 +51,7 @@ gc_import = function(url,
   # create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))
   c = con$count()
-  message("Wrote '", c, "' documents in collection: ", collection)
+  message("There are '", c, "' documents in collection: ", collection)
   c
 }
 
@@ -78,7 +78,7 @@ gc_import = function(url,
 #' gc_import_sf(x)
 #' }
 gc_import_sf = function(x,
-                        collection = "geocode",
+                        collection = "geocoder",
                         index = "2dsphere",
                         mongo_url = 'mongodb://localhost:27017',
                         silent = FALSE) {
@@ -89,7 +89,7 @@ gc_import_sf = function(x,
   # create geoindex
   con$index((add = paste0('{"geometry" : "', index, '"}')))
   c = con$count()
-  message("Wrote '", c, "' documents in collection: ", collection)
+  message("There are '", c, "' documents in collection: ", collection)
   c
 }
 

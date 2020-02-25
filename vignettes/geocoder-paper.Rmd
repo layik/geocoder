@@ -20,7 +20,14 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-`geocoder` R package aims at managing large amounts of geocodes easier. Instead of loading geocodes from storage formats like shape, geojson etc, it is easier for data analysts to have access to their own offline/remote database of geocodes.
+Finding geocodes [@goldberg2007text] is a cumbersome task for data analysts. In the case of the UK, despite the availability of "open geography portal" [@office2016open], data scientists need to find relevant source of the data, which could be typically an ESRI shape file or sometimes a CSV. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what database management systems (DBMS) should be doing. The idea of having an R package that can fascilitate this and in the age of NoSQL and other big data oriented DBMS, `geocoder` is the missing R package for this purpose.
+
+## Relevant technology
+MongoDB comes with built in geospatial indexing and querying [@ameri2014application] around the OGC (Open Geospatial Consortium) standard GeoJSON [@butler2016geojson]. MongoDB accepts GeoJSON formatted coordinates and database indices can be created which fascilitates fast spatial queries supportd by MongoDB. 
+
+The standardisation of storage and access model of two-dimentional geographies by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This is known as [Simple Features](https://www.iso.org/standard/40114.html). In the case of R, the well known package called `sf` [@pebesma2018simple] defines the standard and provides tools to manage geographic data in R.
+
+As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. The Turing Institute's eAtlas project supports GeoJSON format to visualize and analyse as a native format (to JavaScript). GeoJSON is JSON which is natively supported by JavaScript and might be the reason for its wider popularity.
 
 ## UK geocodes case
 
@@ -135,5 +142,78 @@ ggplot() +
   geom_sf(data = r.sf, colour = "red", fill = NA) +
   theme(axis.text.x = element_text(angle = 65, hjust = 1))
 ```
+
+## R vs Mongodb
+We can look at a use-casee where instead of searching through geocodes in memory having loaded `sf` or similar like objecsts in R versus searching through an indexed Mongo instance. Lets assume you have loaded the Vancouver real estate dataset into R and the same data set has been imported using `geocoder::gc_import_sf()`. First we can make sure that a simple query returns the same number of rows:
+
+```{r, eval=FALSE}
+v$count('{"properties.growth": 0.2724}') == 
+  length(which(sf$growth == 0.2724))
+# [1] TRUE
+```
+It is also fair to assume that for a data scientist to make a, In memory databases are built to manage in memory access to data, but that is not the focus of this document. 
+
+```{r inR, results='hide', warning=FALSE, message=FALSE}
+library(sf)
+url = paste0("https://github.com/uber-common/deck.gl-data/",
+             "blob/master/examples/geojson/vancouver-blocks.json?raw=true")
+v.path = file.path(tempdir(), "v.geojson")
+if(!file.exists(v.path)) {
+  download.file(url, destfile = v.path)
+}
+# read first to get bbx
+sf = st_read(v.path)
+bbx = st_as_sfc(st_bbox(sf))
+st_bbox(sf)
+# xmin       ymin       xmax       ymax 
+# -123.26392   49.19952 -123.02347   49.29561 
+# [ <bottom left coordinates> ], xminymin
+# [ <upper right coordinates> ]  xmaxymax
+
+# load sf into mongo
+v = mongolite::mongo(collection = "test_geocoder")
+v$drop() # just to be sure
+geocoder::gc_import_sf(sf, collection = "test_geocoder")
+# load and searrch
+sf_search = function() {
+  sf = st_read(v.path)
+  # in memory search (R)
+  all = st_nearest_points(sf, bbx)
+  stopifnot(length(all) == nrow(sf))
+}
+
+# Mongo search
+mongo_search = function() {
+  vfind = v$find('{
+     "geometry": { 
+        "$geoIntersects": {
+            "$geometry": {
+               "type": "Polygon" ,
+               "coordinates": [
+                 [ [ -123.26392, 49.19952  ], [ -123.26392, 49.29561 ], 
+                 [ -123.02347, 49.29561 ], [ -123.02347, 49.19952 ], 
+                 [ -123.26392, 49.19952  ] ]
+               ]
+            }
+        }
+      }
+     }')
+  stopifnot(nrow(vfind) == nrow(sf))
+}
+mb = microbenchmark::microbenchmark(
+  sf_search(),
+  mongo_search(),
+  times = 2
+)
+
+```
+Now show the results
+```{r show, echo=FALSE}
+mb
+```
+
+
+
+## References
 
 

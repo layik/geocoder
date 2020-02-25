@@ -4,7 +4,7 @@
 \alias{gc_import}
 \title{Import geocode}
 \usage{
-gc_import(url, collection = "geocode", local = TRUE,
+gc_import(url, collection = "geocoder", local = TRUE,
   index = "2dsphere", mongo_url = "mongodb://localhost:27017",
   silent = FALSE)
 }

@@ -4,7 +4,7 @@
 \alias{gc_import_sf}
 \title{Import \code{sf} objects into Mongodb}
 \usage{
-gc_import_sf(x, collection = "geocode", index = "2dsphere",
+gc_import_sf(x, collection = "geocoder", index = "2dsphere",
   mongo_url = "mongodb://localhost:27017", silent = FALSE)
 }
 \arguments{

@@ -4,7 +4,7 @@
 \alias{gc_find}
 \title{Find geocode(s)}
 \usage{
-gc_find(x, collection = "geocode", full_url, as_sf = TRUE)
+gc_find(x, collection = "geocoder", full_url, as_sf = TRUE)
 }
 \arguments{
 \item{x}{keys and values to return geometries with}

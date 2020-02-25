@@ -17,7 +17,7 @@
 #' gc_find("key")
 #' }
 gc_find = function(x,
-        collection = 'geocode',
+        collection = 'geocoder',
         full_url,
         as_sf = TRUE ) {
   force(x)
