@@ -1,11 +1,11 @@
 ---
-title: "Introducing geocoder"
+title: "geocoder: an R package to store and access geocodes in MongoDB"
 author: 
   - "L Hama"
 date: "`r Sys.Date()`"
 output: rmarkdown::github_document
 vignette: >
-  %\VignetteIndexEntry{geocoder}
+  %\VignetteIndexEntry{geocoder-paper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 bibliography: references.bib
