@@ -107,7 +107,7 @@ The returned values are two different geometries which both correctly include th
 
 ## Reproducible example
 
-A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber's Vancouver land area price.
+A reproducible (as the UK msoa example is too large) for this manuscrript would be a slice of Uber's Vancouver land area price.
 
 ```{r reproducible, out.width="50%", fig.align='center'}
 # geojson file from Uber
@@ -130,7 +130,6 @@ vancouver$drop() # if exists
 geocoder::gc_import_sf(v, collection = "vancouver")
 r = vancouver$iterate(query = '{"properties.growth":0.2781}')
 r.sf = geojsonsf::geojson_sf(r$json())
-# plot(r.sf[, ], axes = TRUE)
 ```
 
 Visual check that both entries are the same:
@@ -146,14 +145,16 @@ ggplot() +
 ```
 
 ## R vs Mongodb
-We can look at a use-casee where instead of searching through geocodes in memory having loaded `sf` or similar like objecsts in R versus searching through an indexed Mongo instance. Lets assume you have loaded the Vancouver real estate dataset into R and the same data set has been imported using `geocoder::gc_import_sf()`. First we can make sure that a simple query returns the same number of rows:
+We can look at a use-casee where instead of searching through geocodes in memory we query a local database. For example, instead of loadinig one ore more files and converting them into `sf` or similar like objecsts in R, we search an spatial index in a MongoDB instance. Lets assume you have loaded the Vancouver real estate dataset into R and the same dataset has been imported using into MongoDB using `geocoder::gc_import_sf()` function. 
+
+First we can make sure that a simple query returns the same number of rows:
 
 ```{r, eval=FALSE}
 v$count('{"properties.growth": 0.2724}') == 
   length(which(sf$growth == 0.2724))
 # [1] TRUE
 ```
-It is also fair to assume that for a data scientist to make a, In memory databases are built to manage in memory access to data, but that is not the focus of this document. 
+It is also fair to assume that for a data scientist to make a spatiial query, we have to load the dataset into memory first. We know that in-memory databases are built to manage in-memory access to data, but that is not the focus at the moment. 
 
 ```{r inR, results='hide', warning=FALSE, message=FALSE}
 url = paste0("https://github.com/uber-common/deck.gl-data/",
