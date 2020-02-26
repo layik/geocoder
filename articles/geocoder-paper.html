@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>geocoder: an R package to store and access geocodes in MongoDB • geocoder</title>
+<title>geocoder: an R package to store and access geographiic data in MongoDB • geocoder</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="geocoder: an R package to store and access geocodes in MongoDB">
+<script src="../pkgdown.js"></script><meta property="og:title" content="geocoder: an R package to store and access geographiic data in MongoDB">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -57,7 +57,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/geocoder-paper.html">geocoder: an R package to store and access geocodes in MongoDB</a>
+      <a href="../articles/geocoder-paper.html">geocoder: an R package to store and access geographiic data in MongoDB</a>
     </li>
   </ul>
 </li>
@@ -82,10 +82,10 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>geocoder: an R package to store and access geocodes in MongoDB</h1>
+      <h1>geocoder: an R package to store and access geographiic data in MongoDB</h1>
                         <h4 class="author">L Hama</h4>
             
-            <h4 class="date">2020-02-25</h4>
+            <h4 class="date">2020-02-26</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/layik/geocoder/blob/master/vignettes/geocoder-paper.Rmd"><code>vignettes/geocoder-paper.Rmd</code></a></small>
       <div class="hidden name"><code>geocoder-paper.Rmd</code></div>
@@ -97,14 +97,18 @@
 <div id="introduction" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h2>
-<p>Finding geocodes <span class="citation">(Goldberg, Wilson, and Knoblock 2007)</span> is a cumbersome task for data analysts. In the case of the UK, despite the availability of “open geography portal” <span class="citation">(National Statistics 2016)</span>, data scientists need to find relevant source of the data, which could be typically an ESRI shape file or sometimes a CSV. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what database management systems (DBMS) should be doing. The idea of having an R package that can fascilitate this and in the age of NoSQL and other big data oriented DBMS, <code>geocoder</code> is the missing R package for this purpose.</p>
+<p>Geocodes <span class="citation">(Goldberg, Wilson, and Knoblock 2007)</span> are spatial references which are used to identify points or boundaries in a geographic coordinate system. Finding geocodes is a cumbersome and repeated task for data scientists. In the case of the United Kingdom, despite the availability of “open geography portal” <span class="citation">(National Statistics 2016)</span>, data scientists need to locate the relevant source, which could be typically an ESRI shape or sometimes a comma separated values (CSV) file. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what geospatial database management systems (DBMS) such as PostGIS and MongoDB should be doing. The idea of having an R package that can fascilitate this is the reason for a missing R package called <code>geocoder</code>. In the age of availability of wide range of SQL/NoSQL and other big data oriented DBMS’es, finding geocodes should be easier.</p>
+</div>
+<div id="motivation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#motivation" class="anchor"></a>Motivation</h2>
+<p>The Turing Institute’s <a href="https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine">eAtlas</a> project <span class="citation">(“Turing Geovisualization Engine,” n.d.)</span> is focused on visualizing spatially referenced datasets. It would be much easier to get the geographic data from datasets using databases rather than data science workflows in R/Python. Whilst developing a web based geovisualization eAtlas and allowing users to “load” their datasets in different formats, it would be great to detect geocodes and find coordinate data (such as longitute and latitudes) “automatically”. As it stands, there is no such open API (Application Programming Interface) to query for such geographic data and availability of such data locally (to the application) is becoming a need.</p>
 </div>
 <div id="relevant-technology" class="section level2">
 <h2 class="hasAnchor">
 <a href="#relevant-technology" class="anchor"></a>Relevant technology</h2>
-<p>MongoDB comes with built in geospatial indexing and querying <span class="citation">(Ameri et al. 2014)</span> around the OGC (Open Geospatial Consortium) standard GeoJSON <span class="citation">(Butler et al. 2016)</span>. MongoDB accepts GeoJSON formatted coordinates and database indices can be created which fascilitates fast spatial queries supportd by MongoDB.</p>
-<p>The standardisation of storage and access model of two-dimentional geographies by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This is known as <a href="https://www.iso.org/standard/40114.html">Simple Features</a>. In the case of R, the well known package called <code>sf</code> <span class="citation">(Pebesma 2018)</span> defines the standard and provides tools to manage geographic data in R.</p>
-<p>As a data interchange format, GeoJSON is also widely supported by mapping libraries <span class="citation">(Page 2015)</span>. The Turing Institute’s eAtlas project supports GeoJSON format to visualize and analyse as a native format (to JavaScript). GeoJSON is JSON which is natively supported by JavaScript and might be the reason for its wider popularity.</p>
+<p>The standardisation of storage and access model of two-dimentional geographic references by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This standard is known as <a href="https://www.iso.org/standard/40114.html">Simple Features</a>. In the case of R, the well known package called <code>sf</code> <span class="citation">(Pebesma 2018)</span> defines the standard and provides tools to manage geographic data in R. MongoDB is one of the DBMS’es which also support this standard.</p>
+<p>MongoDB comes with built-in geospatial indexing and querying <span class="citation">(Ameri et al. 2014)</span> around GeoJSON <span class="citation">(Butler et al. 2016)</span>, which is another standard built on top of Simple Featurers. MongoDB accepts GeoJSON formatted coordinates, and database indices can be created which fascilitate fast spatial queries. As a data interchange format, GeoJSON is also widely supported by mapping libraries <span class="citation">(Page 2015)</span>. GeoJSON is JSON which is natively supported (read) by JavaScript and might be the reason for its wider popularity.</p>
 </div>
 <div id="uk-geocodes-case" class="section level2">
 <h2 class="hasAnchor">
@@ -259,11 +263,11 @@
 <p>Now show the results</p>
 <pre><code>#&gt; Unit: milliseconds
 #&gt;            expr        min         lq       mean     median         uq
-#&gt;     sf_search() 299.743216 299.743216 299.743216 299.743216 299.743216
-#&gt;  mongo_search()   1.177754   1.177754   1.177754   1.177754   1.177754
+#&gt;     sf_search() 309.600517 309.600517 309.600517 309.600517 309.600517
+#&gt;  mongo_search()   1.466525   1.466525   1.466525   1.466525   1.466525
 #&gt;         max neval
-#&gt;  299.743216     1
-#&gt;    1.177754     1</code></pre>
+#&gt;  309.600517     1
+#&gt;    1.466525     1</code></pre>
 <p>Visual check:</p>
 <p><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-1.png" width="48%"><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-2.png" width="48%"></p>
 </div>
@@ -289,6 +293,9 @@
 <div id="ref-pebesma2018simple">
 <p>Pebesma, Edzer. 2018. “Simple Features for R: Standardized Support for Spatial Vector Data.” <em>The R Journal</em> 10 (1): 439–46.</p>
 </div>
+<div id="ref-tge">
+<p>“Turing Geovisualization Engine.” n.d. <a href="https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine" class="uri">https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine</a>.</p>
+</div>
 </div>
 </div>
   </div>
@@ -300,6 +307,7 @@
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
 <li><a href="#introduction">Introduction</a></li>
+      <li><a href="#motivation">Motivation</a></li>
       <li><a href="#relevant-technology">Relevant technology</a></li>
       <li><a href="#uk-geocodes-case">UK geocodes case</a></li>
       <li><a href="#reproducible-example">Reproducible example</a></li>
