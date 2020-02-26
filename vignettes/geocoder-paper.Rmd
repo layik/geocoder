@@ -134,7 +134,7 @@ r.sf = geojsonsf::geojson_sf(r$json())
 
 Visual check that both entries are the same:
 
-```{r, echo=FALSE, fig.show = "hold", out.width = "48%"}
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="A sample from dataset plotted from MongoDB (left) and memory (right)"}
 library(ggplot2)
 ggplot() +
   geom_sf(data = v[8, ], colour = "red", fill = NA) +
@@ -169,7 +169,15 @@ cent = st_centroid(st_as_sfc(st_bbox(sf)))
 cent = st_transform(cent, 3488)
 circle = st_buffer(cent, dist = 3000)
 circle = st_transform(circle, 4326)
+```
 
+The dataset is land boundaries in Vancouver with two variables: value per square meter and growth rate. We will use a sample of it by drawing a circle in the center of the boundary box of the whole dataset:
+```{r dataset, results='hide', out.width = "60%", fig.align="center", warning=FALSE, message=FALSE, fig.cap="Vancouver real estate dataset and sample area."}
+plot(st_geometry(sf))
+plot(circle, col = "red", add = T)
+```
+
+```{r microbench, results='hide', warning=FALSE, message=FALSE}
 # import sf into Mongodb
 v = mongolite::mongo(collection = "test_geocoder")
 v$drop() # just in case
@@ -204,14 +212,14 @@ mb = microbenchmark::microbenchmark(
 )
 ```
 ## Conclusion
-Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load thole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
+Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
 ```{r show, echo=FALSE}
 mb
 ```
 
 Visual check:
 
-```{r, echo=FALSE, fig.show = "hold", out.width = "48%"}
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="Vancouver real estate dataset sample area from `st_intersection` (left) and MongoDB `geoIntersects` (right)."}
 plot(sffind["valuePerSqm"], main="sf::st_intersection")
 vfind = geojsonsf::geojson_sf(vfind$json())
 plot(vfind["valuePerSqm"], main="Mongo geoIntersects")
