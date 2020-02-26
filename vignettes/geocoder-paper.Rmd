@@ -1,5 +1,5 @@
 ---
-title: "geocoder: an R package to store and access geocodes in MongoDB"
+title: "geocoder: an R package to store and access geographiic data in MongoDB"
 author: 
   - "L Hama"
 date: "`r Sys.Date()`"
@@ -20,14 +20,16 @@ knitr::opts_chunk$set(
 ```
 
 ## Introduction
-Finding geocodes [@goldberg2007text] is a cumbersome task for data analysts. In the case of the UK, despite the availability of "open geography portal" [@office2016open], data scientists need to find relevant source of the data, which could be typically an ESRI shape file or sometimes a CSV. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what database management systems (DBMS) should be doing. The idea of having an R package that can fascilitate this and in the age of NoSQL and other big data oriented DBMS, `geocoder` is the missing R package for this purpose.
+Geocodes [@goldberg2007text] are spatial references which are used to identify points or boundaries in a geographic coordinate system. Finding geocodes is a cumbersome and repeated task for data scientists. In the case of the United Kingdom, despite the availability of "open geography portal" [@office2016open], data scientists need to locate the relevant source, which could be typically an ESRI shape or sometimes a comma separated values (CSV) file. In the case of those who use R as a data science tool, this also means processing these files repeatedly. Having these geocodes handy which can be easily accessed is what geospatial database management systems (DBMS) such as PostGIS and MongoDB should be doing. The idea of having an R package that can fascilitate this is the reason for a missing R package called `geocoder`. In the age of availability of wide range of SQL/NoSQL and other big data oriented DBMS'es, finding geocodes should be easier. 
+
+## Motivation
+The Turing Institute's [eAtlas](https://www.turing.ac.uk/research/research-projects/turing-geovisualization-engine) project [@tge] is focused on visualizing spatially referenced datasets. It would be much easier to get the geographic data from datasets using databases rather than data science workflows in R/Python. Whilst developing a web based geovisualization eAtlas and allowing users to "load" their datasets in different formats, it would be great to detect geocodes and find coordinate data (such as longitute and latitudes) "automatically". As it stands, there is no such open API (Application Programming Interface) to query for such geographic data and availability of such data locally (to the application) is becoming a need.
 
 ## Relevant technology
-MongoDB comes with built in geospatial indexing and querying [@ameri2014application] around the OGC (Open Geospatial Consortium) standard GeoJSON [@butler2016geojson]. MongoDB accepts GeoJSON formatted coordinates and database indices can be created which fascilitates fast spatial queries supportd by MongoDB. 
+The standardisation of storage and access model of two-dimentional geographic references by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This standard is known as [Simple Features](https://www.iso.org/standard/40114.html). In the case of R, the well known package called `sf` [@pebesma2018simple] defines the standard and provides tools to manage geographic data in R. MongoDB is one of the DBMS'es which also support this standard.
 
-The standardisation of storage and access model of two-dimentional geographies by both Open Geospatial Consortium (OGC) and International Organization for Standardisation (ISO) means programmers can define objects which represent these standards. This is known as [Simple Features](https://www.iso.org/standard/40114.html). In the case of R, the well known package called `sf` [@pebesma2018simple] defines the standard and provides tools to manage geographic data in R.
+MongoDB comes with built-in geospatial indexing and querying [@ameri2014application] around GeoJSON [@butler2016geojson], which is another standard built on top of Simple Featurers. MongoDB accepts GeoJSON formatted coordinates, and database indices can be created which fascilitate fast spatial queries. As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. GeoJSON is JSON which is natively supported (read) by JavaScript and might be the reason for its wider popularity.
 
-As a data interchange format, GeoJSON is also widely supported by mapping libraries [@page2015visualising]. The Turing Institute's eAtlas project supports GeoJSON format to visualize and analyse as a native format (to JavaScript). GeoJSON is JSON which is natively supported by JavaScript and might be the reason for its wider popularity.
 
 ## UK geocodes case
 
