@@ -17,6 +17,10 @@ knitr::opts_chunk$set(
   comment = "#>",
   out.width = "100%"
 )
+pkgs = c("geocoder", "mongolite", "sf", "ggplot2")
+if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
+  stop("cannot build Rmarkdown without necessary packages")
+}
 ```
 
 ## Introduction
@@ -219,10 +223,12 @@ mb
 
 Visual check:
 
-```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="Vancouver real estate dataset sample area from `st_intersection` (left) and MongoDB `geoIntersects` (right)."}
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)."}
 plot(sffind["valuePerSqm"], main="sf::st_intersection")
-vfind = geojsonsf::geojson_sf(vfind$json())
+vfind = geojsonsf::geojson_sf(vfind$json(size = nrow(sf)))
 plot(vfind["valuePerSqm"], main="Mongo geoIntersects")
+# nrow(sffind) == nrow(vfind)
+# TRUE
 ```
 
 
