@@ -1,5 +1,5 @@
 ---
-title: "geocoder: an R package to store and access geographiic data in MongoDB"
+title: "geocoder: an R package to store and access geographic data in MongoDB"
 author: 
   - "L Hama"
 date: "`r Sys.Date()`"
@@ -203,7 +203,8 @@ mb = microbenchmark::microbenchmark(
   times = 1
 )
 ```
-Now show the results, which understandably varies considerably between the two cases as in the case of searching in memory, although it is much faster, we need to load thole data (1.5mb) into memory first. To pain the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
+## Conclusion
+Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load thole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
 ```{r show, echo=FALSE}
 mb
 ```
