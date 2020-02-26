@@ -163,21 +163,16 @@ v.path = file.path(tempdir(), "v.geojson")
 if(!file.exists(v.path)) {
   download.file(url, destfile = v.path)
 }
-# read first to get bbx
+# sampling the data
 sf = st_read(v.path)
-st_bbox(sf)
-# xmin       ymin       xmax       ymax 
-# -123.26392   49.19952 -123.02347   49.29561 
-# [ <bottom left coordinates> ], xminymin
-# [ <upper right coordinates> ]  xmaxymax
 cent = st_centroid(st_as_sfc(st_bbox(sf)))
 cent = st_transform(cent, 3488)
 circle = st_buffer(cent, dist = 3000)
 circle = st_transform(circle, 4326)
 
-# load sf into mongo
+# import sf into Mongodb
 v = mongolite::mongo(collection = "test_geocoder")
-v$drop() # just to be sure
+v$drop() # just in case
 geocoder::gc_import_sf(sf, collection = "test_geocoder")
 
 # scoping
@@ -208,7 +203,7 @@ mb = microbenchmark::microbenchmark(
   times = 1
 )
 ```
-Now show the results
+Now show the results, which understandably varies considerably between the two cases as in the case of searching in memory, although it is much faster, we need to load thole data (1.5mb) into memory first. To pain the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
 ```{r show, echo=FALSE}
 mb
 ```
