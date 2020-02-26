@@ -173,7 +173,7 @@
 <div id="reproducible-example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#reproducible-example" class="anchor"></a>Reproducible example</h2>
-<p>A reproducible (as the UK msoa example is too large) for this Rmarkdown document would be a slice of Uber’s Vancouver land area price.</p>
+<p>A reproducible (as the UK msoa example is too large) for this manuscrript would be a slice of Uber’s Vancouver land area price.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># geojson file from Uber</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(sf)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; Linking to GEOS 3.7.1, GDAL 2.2.2, PROJ 4.9.2</span></a>
@@ -197,19 +197,19 @@
 <a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; There are '10' documents in collection: vancouver</span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [1] 10</span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9">r =<span class="st"> </span>vancouver<span class="op">$</span><span class="kw">iterate</span>(<span class="dt">query =</span> <span class="st">'{"properties.growth":0.2781}'</span>)</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10">r.sf =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(r<span class="op">$</span><span class="kw">json</span>())</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co"># plot(r.sf[, ], axes = TRUE)</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-10" data-line-number="10">r.sf =<span class="st"> </span>geojsonsf<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/geojsonsf/man/geojson_sf.html">geojson_sf</a></span>(r<span class="op">$</span><span class="kw">json</span>())</a></code></pre></div>
 <p>Visual check that both entries are the same:</p>
 <p><img src="geocoder-paper_files/figure-html/unnamed-chunk-3-1.png" width="48%"><img src="geocoder-paper_files/figure-html/unnamed-chunk-3-2.png" width="48%"></p>
 </div>
 <div id="r-vs-mongodb" class="section level2">
 <h2 class="hasAnchor">
 <a href="#r-vs-mongodb" class="anchor"></a>R vs Mongodb</h2>
-<p>We can look at a use-casee where instead of searching through geocodes in memory having loaded <code>sf</code> or similar like objecsts in R versus searching through an indexed Mongo instance. Lets assume you have loaded the Vancouver real estate dataset into R and the same data set has been imported using <code><a href="../reference/gc_import_sf.html">geocoder::gc_import_sf()</a></code>. First we can make sure that a simple query returns the same number of rows:</p>
+<p>We can look at a use-casee where instead of searching through geocodes in memory we query a local database. For example, instead of loadinig one ore more files and converting them into <code>sf</code> or similar like objecsts in R, we search an spatial index in a MongoDB instance. Lets assume you have loaded the Vancouver real estate dataset into R and the same dataset has been imported using into MongoDB using <code><a href="../reference/gc_import_sf.html">geocoder::gc_import_sf()</a></code> function.</p>
+<p>First we can make sure that a simple query returns the same number of rows:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">v<span class="op">$</span><span class="kw">count</span>(<span class="st">'{"properties.growth": 0.2724}'</span>) <span class="op">==</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(sf<span class="op">$</span>growth <span class="op">==</span><span class="st"> </span><span class="fl">0.2724</span>))</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co"># [1] TRUE</span></a></code></pre></div>
-<p>It is also fair to assume that for a data scientist to make a, In memory databases are built to manage in memory access to data, but that is not the focus of this document.</p>
+<p>It is also fair to assume that for a data scientist to make a spatiial query, we have to load the dataset into memory first. We know that in-memory databases are built to manage in-memory access to data, but that is not the focus at the moment.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">url =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span>(<span class="st">"https://github.com/uber-common/deck.gl-data/"</span>,</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">             <span class="st">"blob/master/examples/geojson/vancouver-blocks.json?raw=true"</span>)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">v.path =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"v.geojson"</span>)</a>
@@ -263,11 +263,11 @@
 <p>Now show the results</p>
 <pre><code>#&gt; Unit: milliseconds
 #&gt;            expr        min         lq       mean     median         uq
-#&gt;     sf_search() 309.600517 309.600517 309.600517 309.600517 309.600517
-#&gt;  mongo_search()   1.466525   1.466525   1.466525   1.466525   1.466525
+#&gt;     sf_search() 294.483836 294.483836 294.483836 294.483836 294.483836
+#&gt;  mongo_search()   1.433064   1.433064   1.433064   1.433064   1.433064
 #&gt;         max neval
-#&gt;  309.600517     1
-#&gt;    1.466525     1</code></pre>
+#&gt;  294.483836     1
+#&gt;    1.433064     1</code></pre>
 <p>Visual check:</p>
 <p><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-1.png" width="48%"><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-2.png" width="48%"></p>
 </div>
