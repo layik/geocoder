@@ -8,6 +8,8 @@ vignette: >
   %\VignetteIndexEntry{geocoder-paper}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+header-includes:
+ \usepackage{float}
 bibliography: references.bib
 ---
 
@@ -15,7 +17,8 @@ bibliography: references.bib
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  out.width = "100%"
+  out.width = "100%",
+  out.pos = "h"
 )
 pkgs = c("geocoder", "mongolite", "sf", "ggplot2")
 if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
@@ -42,13 +45,9 @@ UK Office of National Statistics Open Geography Portal contains various files wh
 ### Round trip through MongoDB
 To showcasee the capabilities of `geocoder` package, we can do a round trip data processing from a seudo-standard R spatial `sf` class back to itself through MongoDB's geospatial querying. That is:
 
-* take a shapefile from UK's Open Geography Portal
+* take a shapefile from UK's Open Geography Portal and write it into a MongoDB collection and create a spatial index on it using an `sf` object.
 
-* turn it into an `sf` object
-
-* write it into a MongoDB collection and create a spatial index on it.
-
-* reassemble the output from find queries back to an `sf` object.
+* reassemble the data from MongoDB queries back to an `sf` object.
 
 One of the UK census boundaries is called Middle Superr Output Area (MSOA), 
 which can be found 
@@ -71,7 +70,7 @@ class(msoa.sf)
 # substring(geojsonsf::sf_geojson(msoa.sf[1,]), 1, 350)
 ```
 
-The data is ready in a clean `sf` object and we can convert each row into a ready to be used by `geocder` to import into Mongodb:
+The data is ready in a clean `sf` object and we can use `geocder::gc_import_sf` to import into Mongodb:
 
 ```{r eval=FALSE}
 geocoder::gc_import_sf(msoa.sf, collection = "msoa")
@@ -129,7 +128,7 @@ vancouver = mongolite::mongo("vancouver")
 ```
 
 Let us retrieve the data and plot the land:
-```{r reproducible2, out.width="50%", fig.align='center'}
+```{r reproducible2, fig.show = "hold", out.width="50%", fig.align='center'}
 vancouver$drop() # if exists
 geocoder::gc_import_sf(v, collection = "vancouver")
 r = vancouver$iterate(query = '{"properties.growth":0.2781}')
@@ -176,17 +175,17 @@ circle = st_transform(circle, 4326)
 ```
 
 The dataset is land boundaries in Vancouver with two variables: value per square meter and growth rate. We will use a sample of it by drawing a circle in the center of the boundary box of the whole dataset:
-```{r dataset, results='hide', out.width = "90%", fig.align="center", warning=FALSE, message=FALSE, fig.cap="Vancouver real estate dataset and sample area."}
+```{r dataset, results='hide', out.width = "60%", fig.align="center", warning=FALSE, message=FALSE, fig.cap="Vancouver real estate dataset and sample area."}
 plot(st_geometry(sf))
 plot(circle, col = "red", add = T)
 ```
+\newpage
+Let us now load the dataset into MongoDB and demonstrate a basic experiment, more sophisticated and richer geospatial queries is not the focus of this document but rather to show the new R package `geocoder` functions:
 
 ```{r microbench, results='hide', warning=FALSE, message=FALSE}
-# import sf into Mongodb
 v = mongolite::mongo(collection = "test_geocoder")
 v$drop() # just in case
 geocoder::gc_import_sf(sf, collection = "test_geocoder")
-
 # scoping
 sffind = NULL
 vfind = NULL
@@ -196,7 +195,6 @@ sf_search = function() {
   # in memory search (R)
   sffind <<- st_intersection(sf, st_as_sf(circle))
 }
-
 # Mongo search
 mongo_search = function() {
   vfind <<- v$iterate(paste0('{
@@ -216,21 +214,18 @@ mb = microbenchmark::microbenchmark(
 )
 ```
 ## Conclusion
-Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.
+Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower. Figure (3) assists in doing a visual check of the two methods.
 ```{r show, echo=FALSE}
 mb
 ```
 
-Visual check:
-
-```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)."}
+```{r, echo=FALSE, fig.show = "hold", out.width = "48%", fig.cap="Vancouver real estate dataset sample area from sf's `intersection` (left) and MongoDB `geoIntersects` (right). The way the two functions work can clearly be seen but the number of polygons returned are equal."}
 plot(sffind["valuePerSqm"], main="sf::st_intersection")
 vfind = geojsonsf::geojson_sf(vfind$json(size = nrow(sf)))
 plot(vfind["valuePerSqm"], main="Mongo geoIntersects")
 # nrow(sffind) == nrow(vfind)
 # TRUE
 ```
-
 
 ## References
 
