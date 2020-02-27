@@ -3,7 +3,7 @@ title: "geocoder: an R package to store and access geographic data in MongoDB"
 author: 
   - "L Hama"
 date: "`r Sys.Date()`"
-output: rmarkdown::pdf_document
+output: rmarkdown::github_document
 vignette: >
   %\VignetteIndexEntry{geocoder-paper}
   %\VignetteEngine{knitr::rmarkdown}

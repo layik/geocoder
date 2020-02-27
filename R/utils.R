@@ -27,8 +27,12 @@ gc_query = function(...) {
   coords = input[["coordinates"]]
   # build geoIntersects
   if(query == "geoIntersects") {
-    if(is.null(type) || grepl(pattern = type, x = geom.types)) {
+    if(is.null(type)) {
       stop("For query '", query, "' type is required.")
+    }
+    if(!any(grepl(pattern = type, x = geom.types, ignore.case = TRUE))) {
+      stop("Type '", type, "' must be one of: ",
+           paste(geom.types, collapse = ", "), ".")
     }
     if(is.null(coords)) {
       stop("For query '", query, "' coordinates are required.")
