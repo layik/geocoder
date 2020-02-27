@@ -273,11 +273,11 @@ Vancouver real estate dataset and sample area.
 <p>Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.</p>
 <pre><code>#&gt; Unit: milliseconds
 #&gt;            expr        min         lq       mean     median         uq
-#&gt;     sf_search() 300.465747 300.465747 300.465747 300.465747 300.465747
-#&gt;  mongo_search()   1.276795   1.276795   1.276795   1.276795   1.276795
+#&gt;     sf_search() 314.617116 314.617116 314.617116 314.617116 314.617116
+#&gt;  mongo_search()   1.359393   1.359393   1.359393   1.359393   1.359393
 #&gt;         max neval
-#&gt;  300.465747     1
-#&gt;    1.276795     1</code></pre>
+#&gt;  314.617116     1
+#&gt;    1.359393     1</code></pre>
 <p>Visual check:</p>
 <div class="figure">
 <img src="geocoder-paper_files/figure-html/unnamed-chunk-5-1.png" alt="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)." width="48%"><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-2.png" alt="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)." width="48%"><p class="caption">
