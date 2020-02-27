@@ -21,10 +21,8 @@ knitr::opts_chunk$set(
 ```
 # roadmap
  * list of UK geocodes (most used)
- * another country?
- * basic import works with geojson remote/local files, needs  more work
- * find function can query mongodb and return only geometries
- * generalise even further to import other countries or LSOAs etc
+ * list of another country's?
+ * enable generating MongoDB spatial queries
 
 # Dependencies
 * `mongolite` (main dependency)

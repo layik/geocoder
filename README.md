@@ -11,10 +11,8 @@ more for data analaysis from R.
 # roadmap
 
   - list of UK geocodes (most used)
-  - another country?
-  - basic import works with geojson remote/local files, needs more work
-  - find function can query mongodb and return only geometries
-  - generalise even further to import other countries or LSOAs etc
+  - list of another country’s?
+  - enable generating MongoDB spatial queries
 
 # Dependencies
 
@@ -76,7 +74,7 @@ Quietly populate the collection
 library(geocoder)
 gc_import_sf(v, collection = "vancounver")
 #> Writing '10' documents...
-#> Wrote '10' documents in collection: vancounver
+#> There are '40' documents in collection: vancounver
 ```
 
 Now lets query the collection
@@ -137,27 +135,30 @@ But the steps should be straightforward for an R developer:
 ``` r
 library("geocoder")
 testthat::test_dir("tests/testthat")
-#> ✔ |  OK F W S | Context
+#> ✓ |  OK F W S | Context
 #> 
 ⠏ |   0       | gc-find
 ⠋ |   1       | gc-find
-✔ |   2       | gc-find [1.3 s]
+✓ |   4       | gc-find [1.3 s]
 #> 
 ⠏ |   0       | gc-import
 ⠼ |   5       | gc-import
-✔ |   6       | gc-import [1.5 s]
+✓ |   6       | gc-import [1.3 s]
 #> 
 ⠏ |   0       | gc-import-sf
-✔ |   1       | gc-import-sf
+✓ |   1       | gc-import-sf
 #> 
 ⠏ |   0       | gc-setup
 ⠼ |   5       | gc-setup
-✔ |   6       | gc-setup [0.7 s]
+✓ |   6       | gc-setup [0.7 s]
 #> 
-#> ══ Results ═══════════════════════════════════════════════════════════════════════════════════════
-#> Duration: 3.7 s
+⠏ |   0       | utils
+✓ |  11       | utils
 #> 
-#> OK:       15
+#> ══ Results ═══════════════════════════════════════════════════════════════════
+#> Duration: 3.5 s
+#> 
+#> OK:       28
 #> Failed:   0
 #> Warnings: 0
 #> Skipped:  0
