@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • geocoder</title>
+<title>Generate JSON MongoDB spatial query — gc_query • geocoder</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Generate JSON MongoDB spatial query — gc_query" />
+<meta property="og:description" content="See
+https://docs.mongodb.com/manual/reference/operator/query-geospatial/" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,85 +119,42 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Generate JSON MongoDB spatial query</h1>
+    <small class="dont-index">Source: <a href='https://github.com/layik/geocoder/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>gc_query.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>See
+https://docs.mongodb.com/manual/reference/operator/query-geospatial/</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>gc_query</span>(<span class='no'>...</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="check.html">check()</a></code> </p>
-        </td>
-        <td><p>Function to check environment variable
-local function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_find.html">gc_find()</a></code> </p>
-        </td>
-        <td><p>Find geocode(s)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_import.html">gc_import()</a></code> </p>
-        </td>
-        <td><p>Import geocode</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_import_sf.html">gc_import_sf()</a></code> </p>
-        </td>
-        <td><p>Import <code>sf</code> objects into Mongodb</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_query.html">gc_query()</a></code> </p>
-        </td>
-        <td><p>Generate JSON MongoDB spatial query</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_setup.html">gc_setup()</a></code> </p>
-        </td>
-        <td><p>Setup mongodb</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="gc_write_to_mongo.html">gc_write_to_mongo()</a></code> </p>
-        </td>
-        <td><p>Internal write helper function</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="uk.geocodes.html">uk.geocodes</a></code> </p>
-        </td>
-        <td><p>UK geocode download URLs</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>different params. Requires query type which must be
+one of <code>geoIntersects</code>, <code>geoWithin</code>, <code>near</code> or <code>nearSphere</code>.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>JSON valid MongoDB query</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
+
   </div>
 </div>
 

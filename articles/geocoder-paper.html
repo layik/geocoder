@@ -85,7 +85,7 @@
       <h1>geocoder: an R package to store and access geographic data in MongoDB</h1>
                         <h4 class="author">L Hama</h4>
             
-            <h4 class="date">2020-02-26</h4>
+            <h4 class="date">2020-02-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/layik/geocoder/blob/master/vignettes/geocoder-paper.Rmd"><code>vignettes/geocoder-paper.Rmd</code></a></small>
       <div class="hidden name"><code>geocoder-paper.Rmd</code></div>
@@ -230,7 +230,7 @@ A sample from dataset plotted from MongoDB (left) and memory (right)
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(<span class="kw"><a href="https://rdrr.io/pkg/sf/man/st_geometry.html">st_geometry</a></span>(sf))</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/pkg/sf/man/plot.html">plot</a></span>(circle, <span class="dt">col =</span> <span class="st">"red"</span>, <span class="dt">add =</span> T)</a></code></pre></div>
 <div class="figure" style="text-align: center">
-<img src="geocoder-paper_files/figure-html/dataset-1.png" alt="Vancouver real estate dataset and sample area." width="60%"><p class="caption">
+<img src="geocoder-paper_files/figure-html/dataset-1.png" alt="Vancouver real estate dataset and sample area." width="90%"><p class="caption">
 Vancouver real estate dataset and sample area.
 </p>
 </div>
@@ -272,12 +272,12 @@ Vancouver real estate dataset and sample area.
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
 <p>Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower.</p>
 <pre><code>#&gt; Unit: milliseconds
-#&gt;            expr       min        lq      mean    median        uq       max
-#&gt;     sf_search() 304.27367 304.27367 304.27367 304.27367 304.27367 304.27367
-#&gt;  mongo_search()   1.12441   1.12441   1.12441   1.12441   1.12441   1.12441
-#&gt;  neval
-#&gt;      1
-#&gt;      1</code></pre>
+#&gt;            expr        min         lq       mean     median         uq
+#&gt;     sf_search() 300.465747 300.465747 300.465747 300.465747 300.465747
+#&gt;  mongo_search()   1.276795   1.276795   1.276795   1.276795   1.276795
+#&gt;         max neval
+#&gt;  300.465747     1
+#&gt;    1.276795     1</code></pre>
 <p>Visual check:</p>
 <div class="figure">
 <img src="geocoder-paper_files/figure-html/unnamed-chunk-5-1.png" alt="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)." width="48%"><img src="geocoder-paper_files/figure-html/unnamed-chunk-5-2.png" alt="Vancouver real estate dataset sample area from 'st_intersection' (left) and MongoDB 'geoIntersects' (right)." width="48%"><p class="caption">
