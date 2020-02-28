@@ -1,7 +1,7 @@
 #' Generate JSON MongoDB spatial query
 #'
-#' See MongoDB \url{
-#' https://docs.mongodb.com/manual/reference/operator/query-geospatial/}
+#' See MongoDB
+#' \url{https://docs.mongodb.com/manual/reference/operator/query-geospatial/}
 #' for details of spatial queries. This functions generates only:
 #' `geoIntersects`, `geoWithin`, `near` or `nearSphere`.
 #'

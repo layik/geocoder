@@ -21,8 +21,8 @@ Or just provide a valid sf with one row as both type and coords.}
 JSON valid MongoDB query
 }
 \description{
-See MongoDB \url{
-https://docs.mongodb.com/manual/reference/operator/query-geospatial/}
+See MongoDB
+\url{https://docs.mongodb.com/manual/reference/operator/query-geospatial/}
 for details of spatial queries. This functions generates only:
 \code{geoIntersects}, \code{geoWithin}, \code{near} or \code{nearSphere}.
 }
