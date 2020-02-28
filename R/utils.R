@@ -23,20 +23,21 @@ gc_query = function(query, type, coords, ...) {
   qtypes = c("geoIntersects", "geoWithin", "near", "nearSphere")
   geom.types = c("Point", "MultiPoint", "LineString", "MultiLineString",
                  "Polygon", "MultiPolygon", "GeometryCollection")
-  if(is.null(query) || nchar(query) == 0) {
+  input = list(...)
+  if(missing("query") || is.null(query) || nchar(query) == 0) {
     stop("MongoDB spatial query type is required: ",
          paste(qtypes, collapse = ", "), ".")
   }
   # build geoIntersects
   if(query == "geoIntersects") {
-    if(is.null(type)) {
+    if(missing("type") || is.null(type)) {
       stop("For query '", query, "' type is required.")
     }
     if(!any(grepl(pattern = type, x = geom.types, ignore.case = TRUE))) {
       stop("Type '", type, "' must be one of: ",
            paste(geom.types, collapse = ", "), ".")
     }
-    if(is.null(coords)) {
+    if(missing("coords") || is.null(coords)) {
       stop("For query '", query, "' coordinates are required.")
     }
   }
@@ -48,12 +49,11 @@ gc_query = function(query, type, coords, ...) {
       stop("Type '", type, "' must be one of: ",
            paste(geoWithinTypes, collapse = ", "), ".")
     }
-    if(is.null(coords)) {
+    if(missing("coords") || is.null(coords)) {
       stop("For query '", query, "' coordinates are required.")
     }
   }
   # build near or nearSphere
-  input = list(...)
   maxDistance = input[["maxDistance"]]
   minDistance = input[["minDistance"]]
   if(query == "near" || query == "nearSphere") {

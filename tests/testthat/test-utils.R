@@ -1,6 +1,6 @@
 context("gc-query")
 test_that("nothing returned", {
-  expect_error(gc_query())
+  expect_error(gc_query(), "MongoDB")
   expect_error(gc_query(query = "geoIntersects", type = "point"))
   expect_error(gc_query(query = "geoIntersects"))
 })
@@ -31,8 +31,11 @@ test_that("GeoJSON geomtypes work", {
 })
 
 test_that("generate query", {
+  expect_is(gc_query(query = "geoIntersects", type = "point",
+                     coords = c(1:2)),
+            "character")
   expect_error(gc_query(query = "geoIntersects", type = "linestring"),
-               "argument \"coords\"")
+               "For query 'geoIntersects'")
   expect_is(gc_query(query = "geoIntersects", type = "linestring",
                           coords = matrix(1:6, ncol = 2)),
                   "character")
