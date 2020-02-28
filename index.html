@@ -148,7 +148,7 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(geocoder)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/gc_import_sf.html">gc_import_sf</a></span>(v, <span class="dt">collection =</span> <span class="st">"vancounver"</span>)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; Writing '10' documents...</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; There are '40' documents in collection: vancounver</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; There are '60' documents in collection: vancounver</span></a></code></pre></div>
 <p>Now lets query the collection</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">vancouver<span class="op">$</span><span class="kw"><a href="https://rdrr.io/r/utils/apropos.html">find</a></span>(<span class="st">'{}'</span>, <span class="dt">limit =</span> <span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; data frame with 0 columns and 0 rows</span></a>
@@ -203,11 +203,11 @@
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>find</a>
 <a class="sourceLine" id="cb6-6" data-line-number="6">⠋ <span class="op">|</span><span class="st">   </span><span class="dv">1</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>find</a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">✓ <span class="op">|</span><span class="st">   </span><span class="dv">4</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>find [<span class="fl">1.3</span> s]</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7">✓ <span class="op">|</span><span class="st">   </span><span class="dv">4</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>find [<span class="fl">1.4</span> s]</a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import</a>
 <a class="sourceLine" id="cb6-10" data-line-number="10">⠼ <span class="op">|</span><span class="st">   </span><span class="dv">5</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import</a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">✓ <span class="op">|</span><span class="st">   </span><span class="dv">6</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import [<span class="fl">1.3</span> s]</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11">✓ <span class="op">|</span><span class="st">   </span><span class="dv">6</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import [<span class="fl">1.2</span> s]</a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-13" data-line-number="13">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import<span class="op">-</span>sf</a>
 <a class="sourceLine" id="cb6-14" data-line-number="14">✓ <span class="op">|</span><span class="st">   </span><span class="dv">1</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>import<span class="op">-</span>sf</a>
@@ -216,13 +216,13 @@
 <a class="sourceLine" id="cb6-17" data-line-number="17">⠼ <span class="op">|</span><span class="st">   </span><span class="dv">5</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>setup</a>
 <a class="sourceLine" id="cb6-18" data-line-number="18">✓ <span class="op">|</span><span class="st">   </span><span class="dv">6</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>setup [<span class="fl">0.7</span> s]</a>
 <a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>utils</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21">✓ <span class="op">|</span><span class="st">  </span><span class="dv">11</span>       <span class="op">|</span><span class="st"> </span>utils</a>
+<a class="sourceLine" id="cb6-20" data-line-number="20">⠏ <span class="op">|</span><span class="st">   </span><span class="dv">0</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>query</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21">✓ <span class="op">|</span><span class="st">  </span><span class="dv">23</span>       <span class="op">|</span><span class="st"> </span>gc<span class="op">-</span>query</a>
 <a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; ══ Results ═══════════════════════════════════════════════════════════════════</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; Duration: 3.5 s</span></a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; Duration: 3.7 s</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; OK:       28</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; OK:       40</span></a>
 <a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; Failed:   0</span></a>
 <a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; Warnings: 0</span></a>
 <a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; Skipped:  0</span></a></code></pre></div>

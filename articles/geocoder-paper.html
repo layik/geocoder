@@ -85,7 +85,7 @@
       <h1>geocoder: an R package to store and access geographic data in MongoDB</h1>
                         <h4 class="author">L Hama</h4>
             
-            <h4 class="date">2020-02-27</h4>
+            <h4 class="date">2020-02-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/layik/geocoder/blob/master/vignettes/geocoder-paper.Rmd"><code>vignettes/geocoder-paper.Rmd</code></a></small>
       <div class="hidden name"><code>geocoder-paper.Rmd</code></div>
@@ -270,8 +270,8 @@ Vancouver real estate dataset and sample area.
 <p>Looking at the results, which understandably varies considerably between the two methods because in the case of searching in memory, although it is faster, we need to load the whole data (1.5mb) into memory first. To paint the whole picture, under the same circumstances, even if the whole data is queried, searching through MongoDB would only be three times slower. Figure (3) assists in doing a visual check of the two methods.</p>
 <pre><code>#&gt; Unit: milliseconds
 #&gt;            expr       min        lq      mean    median        uq       max
-#&gt;     sf_search() 303.18774 303.18774 303.18774 303.18774 303.18774 303.18774
-#&gt;  mongo_search()   1.25252   1.25252   1.25252   1.25252   1.25252   1.25252
+#&gt;     sf_search() 308.56535 308.56535 308.56535 308.56535 308.56535 308.56535
+#&gt;  mongo_search()   1.44493   1.44493   1.44493   1.44493   1.44493   1.44493
 #&gt;  neval
 #&gt;      1
 #&gt;      1</code></pre>

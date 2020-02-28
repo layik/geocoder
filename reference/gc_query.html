@@ -36,8 +36,10 @@
 
 
 <meta property="og:title" content="Generate JSON MongoDB spatial query — gc_query" />
-<meta property="og:description" content="See
-https://docs.mongodb.com/manual/reference/operator/query-geospatial/" />
+<meta property="og:description" content="See MongoDB
+https://docs.mongodb.com/manual/reference/operator/query-geospatial/
+for details of spatial queries. This functions generates only:
+geoIntersects, geoWithin, near or nearSphere." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,19 +129,34 @@ https://docs.mongodb.com/manual/reference/operator/query-geospatial/" />
     </div>
 
     <div class="ref-description">
-    <p>See
-https://docs.mongodb.com/manual/reference/operator/query-geospatial/</p>
+    <p>See MongoDB
+<a href='https://docs.mongodb.com/manual/reference/operator/query-geospatial/'>https://docs.mongodb.com/manual/reference/operator/query-geospatial/</a>
+for details of spatial queries. This functions generates only:
+<code>geoIntersects</code>, <code>geoWithin</code>, <code>near</code> or <code>nearSphere</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>gc_query</span>(<span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>gc_query</span>(<span class='no'>query</span>, <span class='no'>type</span>, <span class='no'>coords</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>different params. Requires query type which must be
+      <th>query</th>
+      <td><p>MongoDB query type which must be
 one of <code>geoIntersects</code>, <code>geoWithin</code>, <code>near</code> or <code>nearSphere</code>.</p></td>
+    </tr>
+    <tr>
+      <th>type</th>
+      <td><p>geom type which must be a valid GeoJSON type</p></td>
+    </tr>
+    <tr>
+      <th>coords</th>
+      <td><p>list of coordinates which matches <code>type</code>
+Or just provide a valid sf with one row as both type and coords.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>different params.</p></td>
     </tr>
     </table>
 
