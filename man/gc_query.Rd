@@ -4,16 +4,25 @@
 \alias{gc_query}
 \title{Generate JSON MongoDB spatial query}
 \usage{
-gc_query(...)
+gc_query(query, type, coords, ...)
 }
 \arguments{
-\item{...}{different params. Requires query type which must be
+\item{query}{MongoDB query type which must be
 one of \code{geoIntersects}, \code{geoWithin}, \code{near} or \code{nearSphere}.}
+
+\item{type}{geom type which must be a valid GeoJSON type}
+
+\item{coords}{list of coordinates which matches \code{type}
+Or just provide a valid sf with one row as both type and coords.}
+
+\item{...}{different params.}
 }
 \value{
 JSON valid MongoDB query
 }
 \description{
-See
-https://docs.mongodb.com/manual/reference/operator/query-geospatial/
+See MongoDB \url{
+https://docs.mongodb.com/manual/reference/operator/query-geospatial/}
+for details of spatial queries. This functions generates only:
+\code{geoIntersects}, \code{geoWithin}, \code{near} or \code{nearSphere}.
 }
