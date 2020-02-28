@@ -74,7 +74,7 @@ Quietly populate the collection
 library(geocoder)
 gc_import_sf(v, collection = "vancounver")
 #> Writing '10' documents...
-#> There are '40' documents in collection: vancounver
+#> There are '60' documents in collection: vancounver
 ```
 
 Now lets query the collection
@@ -139,11 +139,11 @@ testthat::test_dir("tests/testthat")
 #> 
 ⠏ |   0       | gc-find
 ⠋ |   1       | gc-find
-✓ |   4       | gc-find [1.3 s]
+✓ |   4       | gc-find [1.4 s]
 #> 
 ⠏ |   0       | gc-import
 ⠼ |   5       | gc-import
-✓ |   6       | gc-import [1.3 s]
+✓ |   6       | gc-import [1.2 s]
 #> 
 ⠏ |   0       | gc-import-sf
 ✓ |   1       | gc-import-sf
@@ -152,13 +152,13 @@ testthat::test_dir("tests/testthat")
 ⠼ |   5       | gc-setup
 ✓ |   6       | gc-setup [0.7 s]
 #> 
-⠏ |   0       | utils
-✓ |  11       | utils
+⠏ |   0       | gc-query
+✓ |  23       | gc-query
 #> 
 #> ══ Results ═══════════════════════════════════════════════════════════════════
-#> Duration: 3.5 s
+#> Duration: 3.7 s
 #> 
-#> OK:       28
+#> OK:       40
 #> Failed:   0
 #> Warnings: 0
 #> Skipped:  0
